@@ -36,7 +36,8 @@ const registerUser = asyncHandler(async (req, res) => {
       message: "Account created Successfully",
     });
   } else {
-    res.status(400).json({status:false, message:"Invalid User Data"});
+    res.status(400)
+    throw new Error("Invalid User Data");
   }
 });
 
@@ -44,7 +45,8 @@ const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   //check if every required field exists
   if (!email || !password) {
-    res.status(400).json({status:false, message:"Please fill all required field"});
+    res.status(400)
+    throw new Error("Please fill all required field");
   }
   //check if every required field exists
   const newuser = await user.findOne({ email });
@@ -61,7 +63,8 @@ const login = asyncHandler(async (req, res) => {
       message: "Happy Socialising!",
     });
   } else {
-    res.status(400).json({status:false, message:"Invalid credentials"});
+    res.status(400)
+    throw new Error("Invalid credentials")
   }
 });
 
@@ -144,10 +147,22 @@ const deleteFile = (imagePath) => {
   });
 };
 
+const allUser = asyncHandler(async (req, res) => {
+    const keyword = req.query.search ? {
+      $or:[
+          { name:{ $regex:keyword, $options:"i"} },
+          { email:{ $regex:keyword, $options:"i"} }
+      ]
+    } : {}
+
+    const users = await user.find(keyword).find({_id:{$ne: req.user._id}})
+})
+
 module.exports = {
   registerUser,
   login,
   getMe,
   uploadProfilePicture,
   removeProfilePicture,
+  allUser
 };

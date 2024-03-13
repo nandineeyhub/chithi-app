@@ -3,7 +3,7 @@ const dotenv = require("dotenv").config()
 const connectDB = require("./config/db")
 const bodyParser = require('body-parser')
 const cors = require('cors');
-
+const errorHandler = require("./Middleware/errorMiddleware")
 const app = express()
 
 app.use(cors());
@@ -12,6 +12,7 @@ app.use(express.json()) //to parse the data posted; the data will be recieved in
 const PORT = process.env.PORT || 5000
 
 app.use("/api/users", require("./Routes/UserRoutes") )
+// app.use(errorHandler)
 
 connectDB()
 
