@@ -3,7 +3,7 @@ import Login from "./Login"
 import Registration from "./Registration"
 
 const Auth = () => {
-  const [account, setAccount] = useState(false)
+  const [account, setAccount] = useState(true)
   return account ? <Login setAccount={setAccount}/> : <Registration setAccount={setAccount}/>
 }
 

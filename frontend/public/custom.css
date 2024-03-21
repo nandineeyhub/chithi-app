@@ -20,7 +20,7 @@
   background: #fff;
   padding: 34px;
   border-radius: 6px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+ 
 }
 .wrapper h2{
   position: relative;
@@ -34,7 +34,7 @@
 }
 .wrapper form .input-box{
   height: 52px;
-  margin: 18px 0;
+  margin: 25px 0;
 }
 form .input-box input{
   height: 100%;
@@ -86,7 +86,7 @@ form .text h3 a:hover{
 }
 .error{
    color:red;
-   font-size: 10px; 
+   font-size: 13px; 
    margin-left:5px ;
 }
 
