@@ -26,12 +26,13 @@ const registerUser = asyncHandler(async (req, res) => {
   const newuser = await user.create({
     name: name,
     email: email,
+    profilePicture:"",
     password: hash,
   });
   //send response accordingly
   if (newuser) {
     res.status(200).json({
-      data: { id: newuser?._id, name: newuser?.name, email: newuser?.email },
+      data: { id: newuser?._id, name: newuser?.name, email: newuser?.email, profilePicture:"" },
       status:true,
       message: "Account created Successfully",
     });
@@ -57,6 +58,7 @@ const login = asyncHandler(async (req, res) => {
         _id: newuser.id,
         name: newuser.name,
         email: newuser.email,
+        profilePicture:newuser.profilePicture,
         token: generateToken(newuser._id),
       },
       status:true,
@@ -126,6 +128,15 @@ const getMe = asyncHandler(async (req, res) => {
   else res.status(400);
 });
 
+
+const updateMe = asyncHandler(async (req, res) => {
+  const userId = req?.user;
+  const newdata = await user.findByIdAndUpdate(userId, req.body)
+  if(newdata){
+    res.status(200).json({status:true, message: "Profile updated." });
+  } else res.status(400).json({status:false, message: "Something went wrong" });
+})
+
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, { expiresIn: "30d" });
 };
@@ -150,12 +161,20 @@ const deleteFile = (imagePath) => {
 const allUser = asyncHandler(async (req, res) => {
     const keyword = req.query.search ? {
       $or:[
-          { name:{ $regex:keyword, $options:"i"} },
-          { email:{ $regex:keyword, $options:"i"} }
+          { name:{ $regex: req.query.search, $options:"i"} },
+          { email:{ $regex: req.query.search, $options:"i"} }
       ]
     } : {}
 
-    const users = await user.find(keyword).find({_id:{$ne: req.user._id}})
+    const users = await user.find(keyword).find({_id:{$ne: req.user._id}}).select("-password -_id")
+
+    if(users){
+        res.status(200).json({
+         status:true,
+         data:users,
+         message: "All Users List."
+         });
+    } else res.status(400).json({ status:false, message:"Something went wrong"})
 })
 
 module.exports = {
@@ -164,5 +183,6 @@ module.exports = {
   getMe,
   uploadProfilePicture,
   removeProfilePicture,
-  allUser
+  allUser,
+  updateMe
 };
