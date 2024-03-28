@@ -1,12 +1,14 @@
-import { ToastContainer } from 'react-toastify';
+
 import { Outlet } from "react-router-dom";
+import store from './Redux/store';
+import { Provider } from "react-redux";
 
 function App() {
+  
   return (
-    <>
-      <ToastContainer />
-      <Outlet />
-    </>
+       <Provider store={store}>
+         <Outlet />
+       </Provider>
   );
 }
 

@@ -35,6 +35,7 @@ const Login = ({ setAccount }) => {
         credentials,
         header
       );
+      console.log(response?.data?.data)
     } catch (error) {}
   };
 
