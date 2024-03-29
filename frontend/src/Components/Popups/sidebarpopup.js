@@ -20,6 +20,7 @@ const Sidebarpopup = ({ open, clickFn, clickref }) => {
         <Link
           onClick={() => {
             dispatch(handleProfileOpen());
+            clickFn()
           }}>
           <i className="fa fa-user" /> Profile
         </Link>

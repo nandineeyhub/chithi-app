@@ -5,7 +5,7 @@ const profileSlice = createSlice({
     initialState:{
         profileOpen : false
     },
-    reducer:{
+    reducers:{
        handleProfileOpen : (state) => {
            state.profileOpen = !state.profileOpen;
        }

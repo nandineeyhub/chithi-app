@@ -3,6 +3,7 @@ import { MidProfilePic } from "./ProfilePics";
 import { usePopUp } from "../../customHooks";
 import Sidebarpopup from "../Popups/sidebarpopup";
 import { useSelector } from "react-redux";
+import Index from "../ProfileUpload.js/Index";
 
 
 const ChatSideBar = () => {
@@ -38,10 +39,10 @@ const ChatSideBar = () => {
         </li>
         <li className="chat-sidebar-profile">
           <MidProfilePic clickFn={setOpen} clickref={clickref}/>
-          {open && <Sidebarpopup open={open}  clickFn={setOpen} clickref={clickref}/>}
+          {open && <Sidebarpopup open={open} clickFn={setOpen} clickref={clickref}/>}
         </li>
       </ul>
-      {/* { profileOpen && <Index/>} */}
+      { profileOpen && <Index/>}
     </aside>
   );
 };

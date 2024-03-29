@@ -106,14 +106,65 @@ form .text h3 a:hover{
   position: fixed;
   left: 50%;
   top: 50%;  
+  transform: translate(-50%, -50%);
   z-index: 12; 
+  background-color: white;
+  padding: 25px;
+  border-radius: 7px;
 }
 
+.choose-dp-logo{
+  position: relative;
+  margin: auto;
+}
+.choose-dp-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.edit-dp{
+  position: absolute;
+  right:3%;
+  top:0%;
+  height:30px;
+  width: 30px;
+  border-radius: 50%;
+  background-color:#026913
+}
+.pencil-size{
+  color: white;
+  cursor: pointer;
+}
+.choose-dp{
+   position: absolute;
+   visibility: hidden;
+}
 .profile{
   visibility: hidden;
 }
 .profile.active{
   visibility:visible;
+}
+.profile input{
+    height: 100%;
+    width: 100%;
+    outline: none;
+    padding: 10px 10px;
+    font-size: 14px;
+    font-weight: 400;
+    color: #333;
+    border: 1.5px solid #C7BEBE;
+    border-radius: 6px;
+}
+.profile input:focus{
+  border-color:  #026913;
+}
+
+.user_img{
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 767px) {
@@ -126,4 +177,12 @@ form .text h3 a:hover{
   border-radius: 6px;
   box-shadow: 0 5px 10px rgba(0,0,0,0);
 }
+
+.spinner-box {
+  height: 100vh;
+  width: 100vw;
+  background-color: white;
+  border-radius: 0px;
+}
+
 }
