@@ -419,6 +419,7 @@
 .conversation-main::-webkit-scrollbar{
     display: none;
 }
+
 .conversation-wrapper {
     list-style-type: none;
 }
@@ -452,7 +453,7 @@
     margin-bottom: 8px;
 }
 .conversation-item-box {
-    max-width: 720px;
+    max-width: 520px;
     position: relative;
     margin-left: auto;
    
