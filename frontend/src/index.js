@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import Auth from './Components/Auth';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ChatWindow from './Components/chat-components/chatWindow';
+import AuthRequired from './Guard';
 
 
 
@@ -19,7 +20,7 @@ const router = createBrowserRouter([{
     element:<Auth/>
   },{
     path:"/messages",
-    element:<ChatWindow/>
+    element:<AuthRequired><ChatWindow/></AuthRequired>
   }]
 }])
 

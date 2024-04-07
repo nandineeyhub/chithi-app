@@ -1,14 +1,18 @@
 import React, { useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
 import { apiUrls, baseURL, headerwithoutauth } from "../apiConfig";
 import callAPI from "../apiUtils/apiCall";
+import { useDispatch } from "react-redux";
+import { setProfile } from "../Redux/ProfileSlice";
 
 const Login = ({ setAccount }) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
   const simpleValidator = useRef(new SimpleReactValidator());
   const [, forceupdate] = useState();
+
+  const navigate = useNavigate()
 
   const handleCredentials = (e) => {
     setCredentials((value) => {
@@ -26,11 +30,22 @@ const Login = ({ setAccount }) => {
   };
 
 
+  const dispatch = useDispatch()
+
+
   const handleLogin = async () => {
     try {
       const response = await callAPI(apiUrls.login, {}, 'post', credentials, headerwithoutauth) 
-      console.log(response?.data?.data)
-    } catch (error) {}
+      if(response?.status){
+        localStorage.setItem("user", JSON.stringify(response?.data))
+        dispatch(setProfile({ name: response?.data?.name, email: response?.data?.email, profilePicture: response?.data?.profilePicture}))
+        navigate("/messages")
+      } else{
+        
+      }
+    } catch (error) {
+
+    }
   };
 
   return (

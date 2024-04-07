@@ -8,7 +8,7 @@ const ProfileUpdateSubmit = () => {
     <div className='d-flex justify-content-end align-items start gap-2 mt-5'>
         <button className='btn btn-success'onClick={()=>{
              dispatch(handleProfileOpen())
-        }}>Update</button>
+        }}>Done</button>
         <button className='btn btn-secondary' onClick={()=>{
              dispatch(handleProfileOpen())
         }}>Cancel</button>
