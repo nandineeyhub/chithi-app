@@ -11,3 +11,7 @@ export const headers = {
     'Authorization': `Bearer ${token}`,
     'Content-Type': 'application/json' // example header
   };
+
+export const headerwithoutauth = {
+    "Content-Type": "application/json",
+  };

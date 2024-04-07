@@ -2,7 +2,8 @@ import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import SimpleReactValidator from "simple-react-validator";
 import axios from "axios";
-import { apiUrls, baseURL } from "../apiConfig";
+import { apiUrls, baseURL, headerwithoutauth } from "../apiConfig";
+import callAPI from "../apiUtils/apiCall";
 
 const Login = ({ setAccount }) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
@@ -24,17 +25,10 @@ const Login = ({ setAccount }) => {
     } else handleLogin();
   };
 
-  const header = {
-    "Content-Type": "application/json",
-  };
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post(
-        baseURL + apiUrls.login,
-        credentials,
-        header
-      );
+      const response = await callAPI(apiUrls.login, {}, 'post', credentials, headerwithoutauth) 
       console.log(response?.data?.data)
     } catch (error) {}
   };
