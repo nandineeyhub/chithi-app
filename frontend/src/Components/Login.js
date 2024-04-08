@@ -38,7 +38,7 @@ const Login = ({ setAccount }) => {
       const response = await callAPI(apiUrls.login, {}, 'post', credentials, headerwithoutauth) 
       if(response?.status){
         localStorage.setItem("user", JSON.stringify(response?.data))
-        dispatch(setProfile({ name: response?.data?.name, email: response?.data?.email, profilePicture: response?.data?.profilePicture}))
+        dispatch(setProfile({name: response?.data?.name, email: response?.data?.email, profilePicture: response?.data?.profilePicture}))
         navigate("/messages")
       } else{
         

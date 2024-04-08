@@ -9,6 +9,7 @@ import Index from "../ProfileUpload.js/Index";
 const ChatSideBar = () => {
   const [open, setOpen] = usePopUp();
   const profileOpen = useSelector(store => store.profile.profileOpen)
+  const profileDetails = useSelector(store=>store.profile.profileDetails)
 
   const clickref = useRef();
 
@@ -27,11 +28,11 @@ const ChatSideBar = () => {
         </li>
   
         <li className="chat-sidebar-profile">
-          <MidProfilePic clickFn={setOpen} clickref={clickref}/>
-          {open && <Sidebarpopup open={open} clickFn={setOpen} clickref={clickref}/>}
+          <MidProfilePic clickFn={setOpen} clickref={clickref} img={profileDetails?.profilePicture}/>
+          {open && <Sidebarpopup open={open} clickFn={setOpen} clickref={clickref} />}
         </li>
       </ul>
-      { profileOpen && <Index/>}
+      { profileOpen && <Index {...profileDetails}/>}
     </aside>
   );
 };
