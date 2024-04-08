@@ -22,7 +22,7 @@ const ProfileDp = ({ dp, uploadDp }) => {
         className="choose-dp"
         type="file"
         accept="image/*"
-        onChange={uploadDp}
+        onChange={(e)=>{uploadDp(e)}}
         ref={openFileref}
       />
     </div>

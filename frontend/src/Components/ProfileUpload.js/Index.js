@@ -3,16 +3,48 @@ import ProfileDp from "./ProfileDp";
 import ProfileDetails from "./ProfileDetails";
 import ProfileUpdateSubmit from "./ProfileUpdateSubmit";
 import { useDispatch } from "react-redux";
-import { handleProfileOpen } from "../../Redux/ProfileSlice";
+import { handleProfileOpen, setProfile } from "../../Redux/ProfileSlice";
+import callAPI from "../../apiUtils/apiCall";
+import { apiUrls,  headers, multiPartHeader } from "../../apiConfig";
 
 
-const Index = ({name = "", email = "", profilePicture = ""}) => {
-  const [dp, setDp] = useState("");
+const Index = ({profileDetails}) => {
+
+  const [dp, setDp] = useState(profileDetails?.profilePicture ? profileDetails?.profilePicture : "");
+  const [details, setDetails] = useState(profileDetails ? profileDetails : {})
+
   const dispatch = useDispatch()
 
-  const uploadDp = (e) => {
-    setDp(e.target.files[0]);
+  const uploadDp = async (e) => {
+    console.log("first")
+    setDp(e.target.files[0])
+    const formData = new FormData()
+    formData.append("picture", e.target.files[0])
+    try{
+       const response = await callAPI(apiUrls.uploadProfilePicture, {}, 'POST', formData, multiPartHeader)
+       if(response?.status){
+          console.log(response?.data)
+       }
+    }catch(error){
+
+    }
   };
+
+  const handleChange = (e) => {
+    setDetails((value) =>{ return {...value, [e.target.name]:e.target.value}})
+  }
+
+  const handleUpdate = async () => {
+     try{
+      const response = await callAPI(apiUrls.updateProfile, {}, 'POST', details, headers)
+      console.log(response)
+      if(response.status){
+        dispatch(setProfile(details))
+      }
+     } catch (error) {
+        
+     } 
+  }
 
   return (
     <div className="profile active">
@@ -25,10 +57,10 @@ const Index = ({name = "", email = "", profilePicture = ""}) => {
           }}></i>
         </div>
         <div className="d-flex justify-content-center align-items-center h-50">
-          <ProfileDp dp={dp} uploadDp={uploadDp} profilePicture={profilePicture}/>
+          <ProfileDp dp={dp} uploadDp={uploadDp} {...profileDetails}/>
         </div>
-        <ProfileDetails name={name} email={email}/>
-        <ProfileUpdateSubmit />
+        <ProfileDetails {...details} editFn={handleChange}/>
+        <ProfileUpdateSubmit handleUpdate={handleUpdate}/>
       </div>
     </div>
   );

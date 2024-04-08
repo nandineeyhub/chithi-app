@@ -5,15 +5,21 @@ export const apiUrls = {
   register: "users/register",
   uploadProfilePicture: "users/upload-picture",
   removeProfilePicture: "users/remove-picture",
+  updateProfile: "users/update-me",
 };
 
-const token = localStorage.getItem("userData")?.token;
+const token = JSON.parse(localStorage.getItem("user"))?.token;
 
 export const headers = {
-    'Authorization': `Bearer ${token}`,
-    'Content-Type': 'application/json' // example header
-  };
+  Authorization: `Bearer ${token}`,
+  "Content-Type": "application/json", // example header
+};
 
 export const headerwithoutauth = {
-    "Content-Type": "application/json",
-  };
+  "Content-Type": "application/json",
+};
+
+export const multiPartHeader = {
+  Authorization: `Bearer ${token}`,
+  "Content-Type": "multipart/form-data",
+};

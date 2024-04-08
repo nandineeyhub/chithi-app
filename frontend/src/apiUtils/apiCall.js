@@ -1,25 +1,31 @@
 import axiosInt from "./axiosUtil";
 
-const callAPI = async (endpoint, params ={}, method, data = null, header = {}) => {
-
+const callAPI = async (
+  endpoint,
+  params = {},
+  method,
+  data = null,
+  headers = {}
+) => {
+  console.log(headers)
   let response;
   switch (method.toLowerCase()) {
     case "get":
-      response = await axiosInt.get(endpoint, { header, params });
+      response = await axiosInt.get(endpoint, { headers, params });
       break;
     case "post":
-      response = await axiosInt.post(endpoint, data, { header });
+      response = await axiosInt.post(endpoint, data, { headers });
       break;
     case "put":
-      response = await axiosInt.put(endpoint, data, { header });
+      response = await axiosInt.put(endpoint, data, { headers });
       break;
     case "delete":
-      response = await axiosInt.delete(endpoint, { header });
+      response = await axiosInt.delete(endpoint, { headers });
       break;
     default:
       throw new Error(`Unsupported HTTP method: ${method}`);
   }
-  return response?.data
+  return response?.data;
 };
 
-export default callAPI
+export default callAPI;
