@@ -27,6 +27,11 @@ const Sidebarpopup = ({ open, clickFn, clickref }) => {
       </li>
       <li>
         <Link href="#">
+          <i className="fa fa-key" /> Password
+        </Link>
+      </li>
+      <li>
+        <Link href="#">
           <i className="fa fa-sign-out" /> Logout
         </Link>
       </li>

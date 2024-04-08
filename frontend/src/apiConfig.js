@@ -10,6 +10,10 @@ export const apiUrls = {
 const token = localStorage.getItem("userData")?.token;
 
 export const headers = {
-  Authorization: `Bearer ${token}`,
-  "Content-Type": "application/json", // example header
-};
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json' // example header
+  };
+
+export const headerwithoutauth = {
+    "Content-Type": "application/json",
+  };
