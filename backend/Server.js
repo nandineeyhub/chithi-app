@@ -4,6 +4,7 @@ const connectDB = require("./config/db")
 const cors = require('cors');
 const errorHandler = require("./Middleware/errorMiddleware")
 const app = express()
+const path = require("path")
 
 app.use(cors());
 app.use(express.json()) //to parse the data posted; the data will be recieved in req.body
@@ -12,6 +13,7 @@ const PORT = process.env.PORT || 8000
 
 app.use("/api/users", require("./Routes/UserRoutes") )
 // app.use(errorHandler)
+app.use(express.static(path.join(__dirname, `backend/uploads`)))
 
 connectDB()
 

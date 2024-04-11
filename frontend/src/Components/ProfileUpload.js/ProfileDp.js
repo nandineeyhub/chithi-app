@@ -1,18 +1,20 @@
 import React, { useRef } from "react";
-
-const ProfileDp = ({ dp, uploadDp }) => {
+import { imgUrl } from "../../apiConfig";
+import { useDispatch, useSelector } from "react-redux";
+const ProfileDp = ({  uploadDp }) => {
+  const dp = useSelector(store => store.profile.profileDetails.profilePicture)
   const openFileref = useRef();
-
+  
   const clickFileInput = () => {
     openFileref.current.click();
   };
-
+  console.log(imgUrl+dp)
   return (
     <div className="choose-dp-logo">
       <div className="user_img">
       <img
         className=""
-        src={dp == "" ? "/Images/upload-icon.png" : URL.createObjectURL(dp)}
+        src={dp == "" ? "/Images/upload-icon.png" : imgUrl+dp}
       />
       </div>
       <div className="edit-dp d-flex justify-content-center align-items-center">
