@@ -8,7 +8,7 @@ const ProfileUpdateSubmit = ({handleUpdate}) => {
     <div className='d-flex justify-content-end align-items start gap-2 mt-5'>
         <button className='btn btn-success'onClick={async ()=>{
              await handleUpdate()
-            //  dispatch(handleProfileOpen())
+             dispatch(handleProfileOpen())
         }}>Done</button>
         <button className='btn btn-secondary' onClick={()=>{
              dispatch(handleProfileOpen())

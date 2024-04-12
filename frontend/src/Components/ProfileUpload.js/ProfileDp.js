@@ -12,7 +12,7 @@ const ProfileDp = ({ dp, uploadDp }) => {
       <div className="user_img">
       <img
         className=""
-        src={dp == "" ? "/Images/upload-icon.png" : URL.createObjectURL(dp)}
+        src={dp == "" ? "/Images/upload-icon.png" : ""}
       />
       </div>
       <div className="edit-dp d-flex justify-content-center align-items-center">

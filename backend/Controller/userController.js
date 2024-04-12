@@ -74,7 +74,7 @@ const uploadProfilePicture = asyncHandler(async (req, res) => {
   const imagePath = req.file.path;
   const userId = req.user;
   const activeUser = await user.findOne({ _id: userId });
-
+  console.log(imagePath)
   if (activeUser.profilePicture != null) {
     deleteFile(activeUser.profilePicture, req.user);
   }
