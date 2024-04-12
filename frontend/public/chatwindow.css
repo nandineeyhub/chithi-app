@@ -479,7 +479,7 @@
     font-size: 14px;
     border-radius: 6px;
     line-height: 1.5;
-    margin-left: 32px;
+   
     
 }
 .conversation-item.me .conversation-item-text {
@@ -756,25 +756,43 @@
     .chat-content {
         padding-left: unset;
     }
+    .conversation{
+       display: none;
+    }
+    .conversation.active{
+        display: block;
+        height: calc(100% - 100px);
+    }
+    .content-sidebar{
+        display: none;
+    }
+    .content-sidebar.active{
+        display: block;
+    }
+ 
     .content-sidebar {
         left: unset;
-        z-index: 10;
+    
         width: 100%;
     }
+
     .chat-sidebar-menu > * > a::before {
         left: 50%;
-        transform: translateX(-50%);
         bottom: 100%;
         top: unset;
     }
     .chat-sidebar-menu > * > a:hover::before {
-        bottom: calc(100% + 8px);
+        bottom: 100%;
         left: 50%;
+    }
+
+    .chat-sidebar{
+        background-color: white;
     }
 
     .chat-content {
         position: relative;
-        height: calc(100% - 48px);
+      
     }
     .conversation.active {
         position: relative;
@@ -786,6 +804,11 @@
     .conversation-default.active {
         display: none;
         padding: 16px;
+    }
+    .conversation-form {
+        background-color: var(--white);
+        display: flex;
+        align-items: flex-end;
     }
 }
 /* end: Breakpoints */

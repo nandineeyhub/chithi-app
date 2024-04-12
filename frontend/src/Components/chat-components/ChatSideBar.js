@@ -26,7 +26,7 @@ const ChatSideBar = () => {
     <aside className="chat-sidebar">
      
       <ul className="chat-sidebar-menu">
-        <li>
+        {/* <li>
           <i className="fa fa-comment my-2 text-success"></i>
         </li>
         <li>
@@ -34,7 +34,7 @@ const ChatSideBar = () => {
         </li>
         <li>
           <i className="fa fa-star my-2 text-secondary"></i>
-        </li>
+        </li> */}
   
         <li className="chat-sidebar-profile">
           <MidProfilePic clickFn={setOpen} clickref={clickref} img={profileDetails?.profilePicture}/>

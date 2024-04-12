@@ -23,7 +23,7 @@ const Index = ({profileDetails}) => {
        const response = await callAPI(apiUrls.uploadProfilePicture, {}, 'POST', formData, multiPartHeader)
        if(response?.status){
         setDetails((value)=>{return {...value, profilePicture:response?.data?.fileName}})
-          
+          console.log("done")
        }
     }catch(error){
 
