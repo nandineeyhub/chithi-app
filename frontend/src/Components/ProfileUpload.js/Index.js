@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ProfileDp from "./ProfileDp";
 import ProfileDetails from "./ProfileDetails";
 import ProfileUpdateSubmit from "./ProfileUpdateSubmit";
@@ -16,14 +16,14 @@ const Index = ({profileDetails}) => {
   const dispatch = useDispatch()
 
   const uploadDp = async (e) => {
-    console.log("first")
     setDp(e.target.files[0])
     const formData = new FormData()
     formData.append("picture", e.target.files[0])
     try{
        const response = await callAPI(apiUrls.uploadProfilePicture, {}, 'POST', formData, multiPartHeader)
        if(response?.status){
-          console.log(response?.data)
+        setDetails((value)=>{return {...value, profilePicture:response?.data?.fileName}})
+          
        }
     }catch(error){
 
@@ -45,6 +45,10 @@ const Index = ({profileDetails}) => {
         
      } 
   }
+
+  useEffect(()=>{
+    dispatch(setProfile(details))
+  },[details?.profilePicture])
 
   return (
     <div className="profile active">
