@@ -80,9 +80,8 @@ const uploadProfilePicture = asyncHandler(async (req, res) => {
   const imagePath = req.file.filename;
   const userId = req.user;
   const activeUser = await user.findOne({ _id: userId });
-  console.log(imagePath)
+
   if (activeUser.profilePicture != null) {
-    console.log(path.join(__dirname,"../uploads",activeUser.profilePicture))
     deleteFile(path.join(__dirname,"../uploads",activeUser.profilePicture), req.user);
   }
 

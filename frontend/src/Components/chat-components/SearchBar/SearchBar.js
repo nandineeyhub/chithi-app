@@ -1,14 +1,18 @@
 import React from "react";
 
-const SearchBar = () => {
+const SearchBar = ({handleSearch, searchQuery}) => {
   return (
-    <form action="" className="content-sidebar-form">
+    <form className="content-sidebar-form" >
       <input
         type="search"
         className="content-sidebar-input"
+        value={searchQuery}
+        onChange={handleSearch}
         placeholder="Search..."
       />
-      <button type="submit" className="content-sidebar-submit">
+      <button type="submit" className="content-sidebar-submit" onClick={(e)=>{
+        e.preventDefault()
+      }}>
         <i className="fa fa-search" />
       </button>
     </form>

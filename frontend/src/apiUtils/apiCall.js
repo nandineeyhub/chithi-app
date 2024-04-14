@@ -7,7 +7,7 @@ const callAPI = async (
   data = null,
   headers = {}
 ) => {
-  console.log(headers)
+ 
   let response;
   switch (method.toLowerCase()) {
     case "get":

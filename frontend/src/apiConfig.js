@@ -1,11 +1,13 @@
 export const baseURL = "http://localhost:8000/api/";
 export const imgUrl = "http://localhost:8000/api/users/images/"
+
 export const apiUrls = {
   login: "users/login",
   register: "users/register",
   uploadProfilePicture: "users/upload-picture",
   removeProfilePicture: "users/remove-picture",
   updateProfile: "users/update-me",
+  searchFriends: "users/get-all-users"
 };
 
 const token = JSON.parse(localStorage.getItem("user"))?.token;
@@ -23,3 +25,5 @@ export const multiPartHeader = {
   Authorization: `Bearer ${token}`,
   "Content-Type": "multipart/form-data",
 };
+
+export const noImg = "https://www.svgrepo.com/show/527946/user-circle.svg"
