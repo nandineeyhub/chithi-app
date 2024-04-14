@@ -82,7 +82,8 @@ const uploadProfilePicture = asyncHandler(async (req, res) => {
   const activeUser = await user.findOne({ _id: userId });
   console.log(imagePath)
   if (activeUser.profilePicture != null) {
-    deleteFile(path.join("../uploads",activeUser.profilePicture), req.user);
+    console.log(path.join(__dirname,"../uploads",activeUser.profilePicture))
+    deleteFile(path.join(__dirname,"../uploads",activeUser.profilePicture), req.user);
   }
 
   const newdata = await user.findByIdAndUpdate(userId, {
