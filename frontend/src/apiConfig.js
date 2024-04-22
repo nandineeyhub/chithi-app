@@ -1,13 +1,19 @@
+
 export const baseURL = "http://localhost:8000/api/";
 export const imgUrl = "http://localhost:8000/api/users/images/"
 
 export const apiUrls = {
+  
   login: "users/login",
   register: "users/register",
   uploadProfilePicture: "users/upload-picture",
   removeProfilePicture: "users/remove-picture",
   updateProfile: "users/update-me",
-  searchFriends: "users/get-all-users"
+  searchFriends: "users/get-all-users",
+
+  accessChat:"chat/accessChat",
+  fetchChats:"chat/fetchChats",
+  sendMessage:"chat/sendMessage"
 };
 
 const token = JSON.parse(localStorage.getItem("user"))?.token;

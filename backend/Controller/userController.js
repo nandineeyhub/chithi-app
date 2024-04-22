@@ -193,7 +193,7 @@ const allUser = asyncHandler(async (req, res) => {
   const users = await user
     .find(keyword)
     .find({ _id: { $ne: req.user._id } })
-    .select("-password -_id");
+    .select("-password");
 
   if (users) {
     res.status(200).json({
@@ -210,7 +210,7 @@ module.exports = {
   login,
   getMe,
   uploadProfilePicture,
-  removeProfilePicture,
+  removeProfilePicture, 
   allUser,
   updateMe,
   getPicture,

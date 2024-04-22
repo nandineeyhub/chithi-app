@@ -11,7 +11,6 @@ const ChatSideBar = () => {
   const [open, setOpen] = usePopUp();
   const profileOpen = useSelector(store => store.profile.profileOpen)
   const profileDetails = useSelector(store=>store.profile.profileDetails)
-  console.log(profileDetails)
   const dispatch = useDispatch()
   const clickref = useRef();
   

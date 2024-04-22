@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import UserCard from "./userCard/userCard";
 import SearchBar from "./SearchBar/SearchBar";
 import callAPI from "../../apiUtils/apiCall";
@@ -42,15 +42,16 @@ const ContentSidebar = () => {
     } catch (error) {}
   };
 
+
   const openChat = (item) => {
     dispatch(setActiveChat(item))
+    localStorage.setItem("activeChat", JSON.stringify(item))
   }
 
   const ListAllUsers = () => {
     return (
       friendSuggestions?.map((item) => {
         return <UserCard {...item} clickFn={()=>{openChat(item)}}/>
-        
       })
     )
   }

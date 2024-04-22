@@ -34,5 +34,5 @@ const sendMessage = asyncHandler(async (req, res) => {
     }
   });
 
-  modules.export = {sendMessage}
+  module.exports = {sendMessage}
   

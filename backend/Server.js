@@ -12,6 +12,7 @@ app.use(express.urlencoded({extended:true}))
 const PORT = process.env.PORT || 8000
 
 app.use("/api/users", require("./Routes/UserRoutes"))
+app.use("/api/chat", require("./Routes/ChatRoutes"))
 // app.use(errorHandler)
 app.use(express.static(path.join(__dirname, `uploads`)))
 connectDB()
