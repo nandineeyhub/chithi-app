@@ -3,10 +3,14 @@ import UserCard from "./userCard/userCard";
 import SearchBar from "./SearchBar/SearchBar";
 import callAPI from "../../apiUtils/apiCall";
 import { apiUrls, headers } from "../../apiConfig";
+import { setActiveChat } from "../../Redux/MessageSlice";
+import {useDispatch} from "react-redux"
 
 const ContentSidebar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [friendSuggestions, setFriendSuggestions] = useState([]);
+
+  const dispatch = useDispatch()
 
   const handleSearch = async (e) => {
     setSearchQuery(e.target.value);
@@ -38,7 +42,18 @@ const ContentSidebar = () => {
     } catch (error) {}
   };
 
-  console.log(friendSuggestions);
+  const openChat = (item) => {
+    dispatch(setActiveChat(item))
+  }
+
+  const ListAllUsers = () => {
+    return (
+      friendSuggestions?.map((item) => {
+        return <UserCard {...item} clickFn={()=>{openChat(item)}}/>
+        
+      })
+    )
+  }
 
   return (
     <div className="content-sidebar active">
@@ -49,9 +64,7 @@ const ContentSidebar = () => {
           <li className="content-message-title">
             {/* <span>Recently</span> */}
           </li>
-          {friendSuggestions?.map((item) => {
-            return <UserCard {...item} />;
-          })}
+            <ListAllUsers/>
         </ul>
       </div>
     </div>

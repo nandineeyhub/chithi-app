@@ -1,9 +1,9 @@
 import React from "react";
 import { imgUrl, noImg } from "../../../apiConfig";
 
-const UserCard = ({name = "--", profilePicture=""}) => {
+const UserCard = ({name = "--", profilePicture="", clickFn}) => {
   return (
-    <li>
+    <li style={{cursor:"pointer"}} onClick={clickFn}>
       <a>
         <img
           className="content-message-image"
@@ -12,9 +12,9 @@ const UserCard = ({name = "--", profilePicture=""}) => {
         />
         <span className="content-message-info">
           <span className="content-message-name">{name}</span>
-          {/* <span className="content-message-text">
-            Lorem ipsum dolor sit amet consectetur.
-          </span> */}
+          <span className="content-message-text">
+           Tap to send a message.
+          </span>
         </span>
         <span className="content-message-more">
           {/* <span className="content-message-unread">5</span> */}

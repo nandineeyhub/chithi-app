@@ -8,8 +8,6 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import ChatWindow from './Components/chat-components/chatWindow';
 import AuthRequired from './Guard';
 
-
-
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
 const router = createBrowserRouter([{
@@ -27,6 +25,7 @@ const router = createBrowserRouter([{
 
 root.render(
     <RouterProvider router={router}/>
+    // <Index/>
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -446,9 +446,9 @@
     object-fit: cover;
     display: block;
 }
-.conversation-item-content {
+/* .conversation-item-content {
     width: 100%;
-}
+} */
 .conversation-item-wrapper:not(:last-child) {
     margin-bottom: 8px;
 }
