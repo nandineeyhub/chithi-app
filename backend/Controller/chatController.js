@@ -59,17 +59,20 @@ const accessChat = asyncHandler(async (req, res) => {
 const fetchChats = asyncHandler(async (req, res) => {
   try {
     chat
-      .find({ users: { $elemMatch: { $eq: req.user._id } } })
-      .populate("users", "-password")
+      .find({ Users: { $elemMatch: { $eq: req.user._id } } })
+      .populate("Users", "-password")
       .populate("groupAdmin", "-password")
       .populate("latestMessage")
       .sort({ updatedAt: -1 })
       .then(async (results) => {
-        results = await User.populate(results, {
+        results = await user.populate(results, {
           path: "latestMessage.sender",
           select: "name profilePicture email",
         });
-        res.status(200).send(results);
+        res.status(200).json({
+          status:true,
+          data:results
+        });
       });
   } catch (error) {
     res.status(400);

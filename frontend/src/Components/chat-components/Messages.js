@@ -37,6 +37,7 @@ const Messages = () => {
   const sendMessage = async () => {
     try {
       const response = await callAPI(apiUrls.sendMessage, {}, 'POST', messageBody, headers)
+      
     } catch(error){
 
     }
@@ -52,7 +53,7 @@ const Messages = () => {
     if (Object.keys(activeChatDetails)?.length > 0) {
      accessChat(activeChatDetails?._id)
     }
-  }, [activeChatDetails?._id]);
+  }, [activeChatDetails, activeChatDetails?._id]);
 
   return (
     <div className="conversation active">

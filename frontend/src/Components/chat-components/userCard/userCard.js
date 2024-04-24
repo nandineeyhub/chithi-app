@@ -1,7 +1,7 @@
 import React from "react";
 import { imgUrl, noImg } from "../../../apiConfig";
 
-const UserCard = ({name = "--", profilePicture="", clickFn}) => {
+const UserCard = ({name = "--", profilePicture="", latestMessage, clickFn}) => {
   return (
     <li style={{cursor:"pointer"}} onClick={clickFn}>
       <a>
@@ -13,7 +13,7 @@ const UserCard = ({name = "--", profilePicture="", clickFn}) => {
         <span className="content-message-info">
           <span className="content-message-name">{name}</span>
           <span className="content-message-text">
-           Tap to send a message.
+           {latestMessage ?  latestMessage : "Tap to send a message."}
           </span>
         </span>
         <span className="content-message-more">

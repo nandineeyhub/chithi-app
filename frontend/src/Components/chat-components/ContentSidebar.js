@@ -9,23 +9,29 @@ import {useDispatch} from "react-redux"
 const ContentSidebar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [friendSuggestions, setFriendSuggestions] = useState([]);
+  const [chats, setChats] = useState([])
 
   const dispatch = useDispatch()
 
+
+
   const handleSearch = async (e) => {
     setSearchQuery(e.target.value);
+  }
 
-    if (e.target.value == "") {
-      setFriendSuggestions([]);
-    } else {
-      const timer = setTimeout(() => {
-        if(e.target.value != "") searchfriends(e.target.value);
-      }, 1000);
-      return () => {
-        clearTimeout(timer);
-      };
+
+  const fetchChats = async () => {
+    try{
+     const response = await callAPI(apiUrls.fetchChats, {}, 'get', null, headers)
+     if(response.status){
+      setChats(response.data)
+     }
+    } catch(error){
+
     }
-  };
+  }
+
+
 
   const searchfriends = async (searchQuery) => {
     try {
@@ -55,6 +61,24 @@ const ContentSidebar = () => {
       })
     )
   }
+
+  useEffect(() => {
+    if (searchQuery === "") {
+      setFriendSuggestions([]);
+    } else {
+       const timer = setTimeout(() => {
+        searchfriends(searchQuery);
+      }, 1000);
+  
+      return () => {
+        clearTimeout(timer);
+      };
+    }
+  }, [searchQuery]);
+
+  useEffect(()=>{
+    fetchChats()
+  },[])
 
   return (
     <div className="content-sidebar active">
