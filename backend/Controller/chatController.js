@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const chat = require("../Model/chatSchema");
-const user = require("../Model/userSchema")
+const user = require("../Model/userSchema");
+const message = require("../Model/messageSchema");
 
 const accessChat = asyncHandler(async (req, res) => {
   const { userId } = req.body;
@@ -18,29 +19,36 @@ const accessChat = asyncHandler(async (req, res) => {
         { Users: { $elemMatch: { $eq: req.user._id } } },
       ],
     })
-    .populate("Users", "-password")
-    .populate("latestMessage");
-
-  isChat = await user.populate(isChat, {
-    path: "latestMessage.sender",
-    select: "name profilePicture email",
-  });
+    .select("-latestMessage")
+    .populate("Users", "-password");
 
   if (isChat.length > 0) {
-    res.send(isChat[0]);
+    const messageList = await message.find({
+      chat: isChat[0]?._id,
+    }).select("-_id -__v -updatedAt -chat").populate("sender", "-password  -email -__v -updatedAt");
+    res.json({
+      status: true,
+      data: {
+        messages: messageList,
+        chatDetails: isChat[0],
+      },
+    });
   } else {
     var chatData = {
-      chatName: "sender",
+      chatName: "private",
       isGroupChat: false,
       Users: [req.user._id, userId],
     };
-    
+
     try {
       const createdChat = await chat.create(chatData);
       const FullChat = await chat
         .findOne({ _id: createdChat._id })
         .populate("Users", "-password");
-      res.status(200).json(FullChat);
+      res.status(200).json({
+        status: true,
+        data: FullChat,
+      });
     } catch (error) {
       res.status(400);
       throw new Error(error.message);

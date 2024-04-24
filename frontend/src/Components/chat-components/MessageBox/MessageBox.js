@@ -1,11 +1,12 @@
 import React from "react";
 
-const MessageBox = () => {
+const MessageBox = ({content, selfStatus}) => {
+  const friendStatus = selfStatus == "" ? "conversation-item-text" : "conversation-item-text-friend"
   return (
     <div className="conversation-item-wrapper">
       <div className="conversation-item-box">
-        <div className="conversation-item-text-friend">
-          <p>Hi</p>
+        <div className={friendStatus}>
+          <p>{content}</p>
           <div className="conversation-item-time">12:30</div>
         </div>
       </div>

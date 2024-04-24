@@ -1,8 +1,8 @@
 import React from "react";
-import ChatSideBar from "./ChatSideBar";
-import ContentSidebar from "./ContentSidebar";
-import DefaultChatWindow from "./DefaultChatWindow";
-import Messages from "./Messages";
+import ChatSideBar from "../ChatSideBar";
+import ContentSidebar from "../ContentSidebar";
+import DefaultChatWindow from "../DefaultChatWindow";
+import Messages from "../Messages";
 
 const ChatWindow = () => {
   return (

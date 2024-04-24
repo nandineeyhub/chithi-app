@@ -1,38 +1,44 @@
-const Message = require("../Model/messageSchema")
-const asyncHandler = require("express-async-handler")
+const Message = require("../Model/messageSchema");
+const asyncHandler = require("express-async-handler");
+const user = require("../Model/userSchema")
+const chat = require("../Model/chatSchema")
 
 const sendMessage = asyncHandler(async (req, res) => {
-    const { content, chatId } = req.body;
-  
-    if (!content || !chatId) {
-      console.log("Invalid data passed into request");
-      return res.sendStatus(400);
-    }
-  
-    var newMessage = {
-      sender: req.user._id,
-      content: content,
-      chat: chatId,
-    };
-  
-    try {
-      var message = await Message.create(newMessage);
-  
-      message = await message.populate("sender", "name pic").execPopulate();
-      message = await message.populate("chat").execPopulate();
-      message = await User.populate(message, {
-        path: "chat.users",
-        select: "name pic email",
-      });
-  
-      await Chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
-  
-      res.json(message);
-    } catch (error) {
-      res.status(400);
-      throw new Error(error.message);
-    }
-  });
+  const { content, chatId } = req.body;
 
-  module.exports = {sendMessage}
-  
+  if (!content || !chatId) {
+    console.log("Invalid data passed into request");
+    return res.sendStatus(400);
+  }
+
+  var newMessage = {
+    sender: req.user._id,
+    content: content,
+    chat: chatId,
+  };
+
+  try {
+    var message = await Message.create(newMessage);
+
+    message = await message.populate("sender", "name profilePicture");
+    message = await message.populate("chat");
+    message = await user.populate(message, {
+      path: "chat.Users",
+      select: "name profilePicture email",
+    });
+
+    await chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+
+    res.json({
+      status:true,
+      data:{
+        message:message
+      }});
+
+  } catch (error) {
+    res.status(400);
+    throw new Error(error.message);
+  }
+});
+
+module.exports = { sendMessage };

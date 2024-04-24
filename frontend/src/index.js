@@ -5,8 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Auth from './Components/Auth';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import ChatWindow from './Components/chat-components/chatWindow';
 import AuthRequired from './Guard';
+import ChatWindow from './Components/chat-components/MainLayout/chatWindow';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
