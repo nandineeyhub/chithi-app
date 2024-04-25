@@ -4,36 +4,42 @@ import SearchBar from "./SearchBar/SearchBar";
 import callAPI from "../../apiUtils/apiCall";
 import { apiUrls, headers } from "../../apiConfig";
 import { setActiveChat } from "../../Redux/MessageSlice";
-import {useDispatch} from "react-redux"
+import { useDispatch } from "react-redux";
 
 const ContentSidebar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [friendSuggestions, setFriendSuggestions] = useState([]);
-  const [chats, setChats] = useState([])
+  const [loader, setLoader] = useState(false)
+  const [chats, setChats] = useState([]);
 
-  const dispatch = useDispatch()
-
-
+  const dispatch = useDispatch();
 
   const handleSearch = async (e) => {
     setSearchQuery(e.target.value);
-  }
-
+  };
 
   const fetchChats = async () => {
-    try{
-     const response = await callAPI(apiUrls.fetchChats, {}, 'get', null, headers)
-     if(response.status){
-      setChats(response.data)
-     }
-    } catch(error){
-
+    setLoader(true)
+    try {
+      const response = await callAPI(
+        apiUrls.fetchChats,
+        {},
+        "get",
+        null,
+        headers
+      );
+      if (response.status) {
+        setChats(response.data);
+        setFriendSuggestions(response.data)
+        setLoader(false)
+      }
+    } catch (error) {
+      setLoader(false)
     }
-  }
-
-
+  };
 
   const searchfriends = async (searchQuery) => {
+    setLoader(loader)
     try {
       const response = await callAPI(
         apiUrls.searchFriends,
@@ -44,41 +50,59 @@ const ContentSidebar = () => {
       );
       if (response?.status) {
         setFriendSuggestions(response?.data);
+        setLoader(false)
       }
-    } catch (error) {}
+    } catch (error) {
+      setLoader(false)
+    }
   };
 
-
   const openChat = (item) => {
-    dispatch(setActiveChat(item))
-    localStorage.setItem("activeChat", JSON.stringify(item))
-  }
+    dispatch(setActiveChat(item));
+    localStorage.setItem("activeChat", JSON.stringify(item));
+  };
 
   const ListAllUsers = () => {
-    return (
-      friendSuggestions?.map((item) => {
-        return <UserCard {...item} clickFn={()=>{openChat(item)}}/>
-      })
-    )
-  }
+    return loader == false && friendSuggestions?.map((item) => {
+      const {Users = []} = item
+      return searchQuery.length == 0 ? (
+        <UserCard
+          name={Users[1]?.name}
+          profilePicture={Users[1]?.profilePicture}
+          latestMessage={item?.latestMessage?.content}
+          clickFn={() => {
+            openChat(item?.Users[1]);
+          }}
+        />
+      ) : (
+        <UserCard
+          {...item}
+          latestMessage={"Tap to send a message."}
+          clickFn={() => {
+            openChat(item);
+          }}
+        />
+      );
+    });
+  };
 
   useEffect(() => {
     if (searchQuery === "") {
-      setFriendSuggestions([]);
+      setFriendSuggestions(chats);
     } else {
-       const timer = setTimeout(() => {
+      const timer = setTimeout(() => {
         searchfriends(searchQuery);
       }, 1000);
-  
+
       return () => {
         clearTimeout(timer);
       };
     }
   }, [searchQuery]);
 
-  useEffect(()=>{
-    fetchChats()
-  },[])
+  useEffect(() => {
+    fetchChats();
+  }, []);
 
   return (
     <div className="content-sidebar active">
@@ -89,7 +113,7 @@ const ContentSidebar = () => {
           <li className="content-message-title">
             {/* <span>Recently</span> */}
           </li>
-            <ListAllUsers/>
+          <ListAllUsers />
         </ul>
       </div>
     </div>
