@@ -9,17 +9,19 @@ import { useDispatch } from "react-redux";
 const ContentSidebar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [friendSuggestions, setFriendSuggestions] = useState([]);
-  const [loader, setLoader] = useState(false)
+  const [loader, setLoader] = useState(false);
   const [chats, setChats] = useState([]);
 
   const dispatch = useDispatch();
 
   const handleSearch = async (e) => {
     setSearchQuery(e.target.value);
+    if (e.target.value != "") setLoader(true);
+    else setLoader(false);
   };
 
   const fetchChats = async () => {
-    setLoader(true)
+    setLoader(true);
     try {
       const response = await callAPI(
         apiUrls.fetchChats,
@@ -30,16 +32,16 @@ const ContentSidebar = () => {
       );
       if (response.status) {
         setChats(response.data);
-        setFriendSuggestions(response.data)
-        setLoader(false)
+        setFriendSuggestions(response.data);
+        setLoader(false);
       }
     } catch (error) {
-      setLoader(false)
+      setLoader(false);
     }
   };
 
   const searchfriends = async (searchQuery) => {
-    setLoader(loader)
+    setLoader(true);
     try {
       const response = await callAPI(
         apiUrls.searchFriends,
@@ -50,10 +52,10 @@ const ContentSidebar = () => {
       );
       if (response?.status) {
         setFriendSuggestions(response?.data);
-        setLoader(false)
+        setLoader(false);
       }
     } catch (error) {
-      setLoader(false)
+      setLoader(false);
     }
   };
 
@@ -63,27 +65,30 @@ const ContentSidebar = () => {
   };
 
   const ListAllUsers = () => {
-    return loader == false && friendSuggestions?.map((item) => {
-      const {Users = []} = item
-      return searchQuery.length == 0 ? (
-        <UserCard
-          name={Users[1]?.name}
-          profilePicture={Users[1]?.profilePicture}
-          latestMessage={item?.latestMessage?.content}
-          clickFn={() => {
-            openChat(item?.Users[1]);
-          }}
-        />
-      ) : (
-        <UserCard
-          {...item}
-          latestMessage={"Tap to send a message."}
-          clickFn={() => {
-            openChat(item);
-          }}
-        />
-      );
-    });
+    return (
+      loader == false &&
+      friendSuggestions?.map((item) => {
+        const { Users = [] } = item;
+        return searchQuery.length == 0 ? (
+          <UserCard
+            name={Users[1]?.name}
+            profilePicture={Users[1]?.profilePicture}
+            latestMessage={item?.latestMessage?.content}
+            clickFn={() => {
+              openChat(item?.Users[1]);
+            }}
+          />
+        ) : (
+          <UserCard
+            {...item}
+            latestMessage={"Tap to send a message."}
+            clickFn={() => {
+              openChat(item);
+            }}
+          />
+        );
+      })
+    );
   };
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import React from "react";
 
-const MessageTypeBar = ({ handleMessage, sendMessage }) => {
+const MessageTypeBar = ({ handleMessage, sendMessage, content="" }) => {
   return (
     <div className="conversation-form">
       <div className="d-flex justify-content-center align-items-center gap-2">
@@ -16,7 +16,7 @@ const MessageTypeBar = ({ handleMessage, sendMessage }) => {
           className="conversation-form-input"
           rows={1}
           placeholder="Type here..."
-          defaultValue={""}
+          value={content}
           onChange={handleMessage}
         />
       </div>

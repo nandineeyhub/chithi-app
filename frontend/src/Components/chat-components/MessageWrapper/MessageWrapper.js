@@ -3,6 +3,7 @@ import MessageBox from "../MessageBox/MessageBox";
 import UserDpSm from "../UserDpSm/UserDpSm";
 
 const MessageWrapper = ({ messages = [] }) => {
+
   const [messageList, setMessageList] = useState([]);
   let messageListTemp = [];
   let subList = [];
@@ -31,11 +32,9 @@ const MessageWrapper = ({ messages = [] }) => {
     }
   };
 
-  console.log(messageList);
-
   useEffect(() => {
     serializeMessage();
-  }, [messages]);
+  }, [messages.length]);
 
   return messageList.map((item) => {
     console.log("run");
