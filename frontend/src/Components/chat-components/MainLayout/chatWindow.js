@@ -1,5 +1,5 @@
 import React from "react";
-import ChatSideBar from "../ChatSideBar";
+import ChatSideBar from "../ChatSideBar/ChatSideBar";
 import ContentSidebar from "../ContentSidebar";
 import DefaultChatWindow from "../DefaultChatWindow";
 import Messages from "../Messages";

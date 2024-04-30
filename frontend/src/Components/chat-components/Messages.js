@@ -9,7 +9,7 @@ import callAPI from "../../apiUtils/apiCall";
 import { apiUrls, headers } from "../../apiConfig";
 
 const Messages = () => {
-  const [chatDetails, setChatDetails] = useState({ });
+  const [chatDetails, setChatDetails] = useState({});
   const [messageBody, setMessageBody] = useState({ chatId: "", content: "" });
   const activeChatDetails = useSelector((store) => store.messages.activeChat);
   const dispatch = useDispatch();
@@ -66,18 +66,16 @@ const Messages = () => {
   };
 
   useEffect(() => {
-    if (Object.keys(activeChatDetails)?.length == 0) {
+    if (activeChatDetails && Object.keys(activeChatDetails)?.length == 0) {
       dispatch(setActiveChat(JSON.parse(localStorage.getItem("activeChat"))));
     }
   }, []);
 
   useEffect(() => {
-    if (Object.keys(activeChatDetails)?.length > 0) {
+    if (activeChatDetails && Object.keys(activeChatDetails)?.length > 0) {
       accessChat(activeChatDetails?._id);
     }
-  }, [activeChatDetails, activeChatDetails?._id]);
-  
-
+  }, [activeChatDetails?._id]);
 
   return (
     <div className="conversation active">

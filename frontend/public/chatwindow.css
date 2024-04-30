@@ -699,6 +699,11 @@
 .conversation-default p {
     margin-top: 16px;
 }
+
+.group-add{
+    color:#026913;
+    cursor:pointer;
+}
 /* end: Conversation */
 
 
