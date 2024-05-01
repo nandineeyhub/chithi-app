@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from "react";
-import { MidProfilePic } from "./ProfilePics";
-import { usePopUp } from "../../customHooks";
-import Sidebarpopup from "../Popups/sidebarpopup";
+import { MidProfilePic } from "../ProfilePics";
+import { usePopUp } from "../../../customHooks";
+import Sidebarpopup from "../../Popups/sidebarpopup";
 import { useDispatch, useSelector } from "react-redux";
-import Index from "../ProfileUpload.js/Index";
-import { setProfile } from "../../Redux/ProfileSlice";
+import Index from "../../ProfileUpload.js/Index";
+import { setProfile } from "../../../Redux/ProfileSlice";
+
 
 
 const ChatSideBar = () => {

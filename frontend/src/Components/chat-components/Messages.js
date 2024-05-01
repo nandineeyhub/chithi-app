@@ -10,7 +10,7 @@ import { apiUrls, headers } from "../../apiConfig";
 import DefaultChatWindow from "./DefaultChatWindow";
 
 const Messages = () => {
-  const [chatDetails, setChatDetails] = useState({ });
+  const [chatDetails, setChatDetails] = useState({});
   const [messageBody, setMessageBody] = useState({ chatId: "", content: "" });
   const activeChatDetails = useSelector((store) => store.messages.activeChat);
   const dispatch = useDispatch();
@@ -76,9 +76,7 @@ const Messages = () => {
     if (activeChatDetails && Object.keys(activeChatDetails)?.length > 0) {
       accessChat(activeChatDetails?._id);
     }
-  }, [activeChatDetails, activeChatDetails?._id]);
-  
-
+  }, [activeChatDetails?._id]);
 
   return activeChatDetails ? (
     <div className="conversation active">

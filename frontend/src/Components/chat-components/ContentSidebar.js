@@ -118,7 +118,10 @@ const ContentSidebar = () => {
 
   return (
     <div className="content-sidebar active">
-      <div className="content-sidebar-title">Chats</div>
+      <div className="d-flex justify-content-between align-items-center">
+        <div className="content-sidebar-title">Chats</div>
+        <i className="fa fa-plus content-sidebar-title group-add"></i>
+      </div>
       <SearchBar handleSearch={handleSearch} searchQuery={searchQuery} />
       <div className="content-messages">
         <ul className="content-messages-list">
