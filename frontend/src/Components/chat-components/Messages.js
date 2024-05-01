@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setActiveChat } from "../../Redux/MessageSlice";
 import callAPI from "../../apiUtils/apiCall";
 import { apiUrls, headers } from "../../apiConfig";
+import DefaultChatWindow from "./DefaultChatWindow";
 
 const Messages = () => {
   const [chatDetails, setChatDetails] = useState({ });
@@ -66,20 +67,20 @@ const Messages = () => {
   };
 
   useEffect(() => {
-    if (Object.keys(activeChatDetails)?.length == 0) {
+    if (activeChatDetails && Object.keys(activeChatDetails)?.length == 0) {
       dispatch(setActiveChat(JSON.parse(localStorage.getItem("activeChat"))));
     }
   }, []);
 
   useEffect(() => {
-    if (Object.keys(activeChatDetails)?.length > 0) {
+    if (activeChatDetails && Object.keys(activeChatDetails)?.length > 0) {
       accessChat(activeChatDetails?._id);
     }
   }, [activeChatDetails, activeChatDetails?._id]);
   
 
 
-  return (
+  return activeChatDetails ? (
     <div className="conversation active">
       <ChatHeader {...activeChatDetails} />
       <div className="conversation-main">
@@ -94,7 +95,7 @@ const Messages = () => {
         content={messageBody.content}
       />
     </div>
-  );
+  ) : <DefaultChatWindow/>
 };
 
 export default Messages;

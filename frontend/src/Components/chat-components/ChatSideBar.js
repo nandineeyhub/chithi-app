@@ -8,6 +8,7 @@ import { setProfile } from "../../Redux/ProfileSlice";
 
 
 const ChatSideBar = () => {
+  
   const [open, setOpen] = usePopUp();
   const profileOpen = useSelector(store => store.profile.profileOpen)
   const profileDetails = useSelector(store=>store.profile.profileDetails)

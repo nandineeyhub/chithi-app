@@ -4,13 +4,15 @@ import SearchBar from "./SearchBar/SearchBar";
 import callAPI from "../../apiUtils/apiCall";
 import { apiUrls, headers } from "../../apiConfig";
 import { setActiveChat } from "../../Redux/MessageSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 const ContentSidebar = () => {
+  
   const [searchQuery, setSearchQuery] = useState("");
   const [friendSuggestions, setFriendSuggestions] = useState([]);
   const [loader, setLoader] = useState(false);
   const [chats, setChats] = useState([]);
+
 
   const dispatch = useDispatch();
 
@@ -23,12 +25,17 @@ const ContentSidebar = () => {
   const fetchChats = async () => {
     setLoader(true);
     try {
+      const token = JSON.parse(localStorage.getItem("user"))?.token;
+      const headerstemp = {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json", // example header
+      };
       const response = await callAPI(
         apiUrls.fetchChats,
         {},
         "get",
         null,
-        headers
+        headerstemp
       );
       if (response.status) {
         setChats(response.data);
