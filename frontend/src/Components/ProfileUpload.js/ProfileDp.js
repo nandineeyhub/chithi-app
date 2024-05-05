@@ -8,7 +8,7 @@ const ProfileDp = ({  uploadDp }) => {
   const clickFileInput = () => {
     openFileref.current.click();
   };
-  console.log(imgUrl+dp)
+
   return (
     <div className="choose-dp-logo">
       <div className="user_img">

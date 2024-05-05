@@ -13,7 +13,9 @@ export const apiUrls = {
 
   accessChat:"chat/accessChat",
   fetchChats:"chat/fetchChats",
-  sendMessage:"chat/sendMessage"
+  sendMessage:"chat/sendMessage",
+  
+  createGroupChat:"chat/createGroupChat",
 };
 
 const token = JSON.parse(localStorage.getItem("user"))?.token;

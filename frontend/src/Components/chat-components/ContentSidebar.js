@@ -5,6 +5,8 @@ import callAPI from "../../apiUtils/apiCall";
 import { apiUrls, headers } from "../../apiConfig";
 import { setActiveChat } from "../../Redux/MessageSlice";
 import { useDispatch, useSelector } from "react-redux";
+import CreateGroupPopup from "./CreateGroupPopup/CreateGroupPopup";
+import useHandlePopup from "../../helpers/useHandlePopup";
 
 const ContentSidebar = () => {
   
@@ -12,8 +14,14 @@ const ContentSidebar = () => {
   const [friendSuggestions, setFriendSuggestions] = useState([]);
   const [loader, setLoader] = useState(false);
   const [chats, setChats] = useState([]);
+  const [groupOpen, setGroupOpen] = useHandlePopup()
+  const [groupData, setGroupData] = useState({name:"", users:[]})
 
-
+  const token = JSON.parse(localStorage.getItem("user"))?.token;
+  const headerstemp = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json", // example header
+  };
   const dispatch = useDispatch();
 
   const handleSearch = async (e) => {
@@ -22,14 +30,17 @@ const ContentSidebar = () => {
     else setLoader(false);
   };
 
+  const createGroupChat = async () => {
+    try{
+      const response = await callAPI(apiUrls.createGroupChat, {} , 'post', groupData, headerstemp)
+    } catch(error){
+          
+    }
+  }
+
   const fetchChats = async () => {
     setLoader(true);
     try {
-      const token = JSON.parse(localStorage.getItem("user"))?.token;
-      const headerstemp = {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json", // example header
-      };
       const response = await callAPI(
         apiUrls.fetchChats,
         {},
@@ -120,7 +131,7 @@ const ContentSidebar = () => {
     <div className="content-sidebar active">
       <div className="d-flex justify-content-between align-items-center">
         <div className="content-sidebar-title">Chats</div>
-        <i className="fa fa-plus content-sidebar-title group-add"></i>
+        <i className="fa fa-plus content-sidebar-title group-add" onClick={setGroupOpen}></i>
       </div>
       <SearchBar handleSearch={handleSearch} searchQuery={searchQuery} />
       <div className="content-messages">
@@ -131,6 +142,7 @@ const ContentSidebar = () => {
           <ListAllUsers />
         </ul>
       </div>
+      {groupOpen && <CreateGroupPopup fn={setGroupOpen} users={chats} setGroupData={setGroupData} groupData={groupData}/>}
     </div>
   );
 };
