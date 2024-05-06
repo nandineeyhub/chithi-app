@@ -10,14 +10,15 @@ const CreateGroupPopup = ({ fn, users = [], setGroupData, groupData }) => {
   const ListAllUsers = () => {
     return users?.map((item) => {
       const { Users = [], isGroupChat=false} = item;
-      const imgUrlString = imgUrl+Users[1]?.profilePicture
+      const user = Users.filter((item)=>{ return  item?._id != JSON.parse(localStorage.getItem("user"))?._id})
+      const imgUrlString = imgUrl+user[0]?.profilePicture
       return isGroupChat==false && (
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex justify-content-start align-items-center p-2">
-            <img className="content-message-image" src={Users[1]?.profilePicture == "" ? noImg : imgUrlString} alt="user" />
+            <img className="content-message-image" src={user[1]?.profilePicture == "" ? noImg : imgUrlString} alt="user" />
            <div>
-           <div>{Users[1]?.name}</div>
-            <div>{Users[1]?.email}</div>
+           <div>{user[0]?.name}</div>
+            <div>{user[0]?.email}</div>
            </div>
           </div>
           <div></div>

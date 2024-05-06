@@ -87,13 +87,14 @@ const ContentSidebar = () => {
       loader == false &&
       friendSuggestions?.map((item) => {
         const { Users = [] } = item;
+        const user = Users.filter((item)=>{ return  item?._id != JSON.parse(localStorage.getItem("user"))?._id})
         return searchQuery.length == 0 ? (
           <UserCard
-            name={Users[1]?.name}
-            profilePicture={Users[1]?.profilePicture}
+            name={user[0]?.name}
+            profilePicture={user[0]?.profilePicture}
             latestMessage={item?.latestMessage?.content}
             clickFn={() => {
-              openChat(item?.Users[1]);
+              user && openChat(item?.user[0]);
             }}
           />
         ) : (
