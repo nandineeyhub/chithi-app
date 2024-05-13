@@ -9,15 +9,15 @@ import CreateGroupPopup from "./CreateGroupPopup/CreateGroupPopup";
 import useHandlePopup from "../../helpers/useHandlePopup";
 
 const ContentSidebar = () => {
-  
   const [searchQuery, setSearchQuery] = useState("");
   const [friendSuggestions, setFriendSuggestions] = useState([]);
   const [loader, setLoader] = useState(false);
   const [chats, setChats] = useState([]);
-  const [groupOpen, setGroupOpen] = useHandlePopup()
-  const [groupData, setGroupData] = useState({name:"", users:[]})
+  const [groupOpen, setGroupOpen] = useHandlePopup();
+  const [groupData, setGroupData] = useState({ name: "", users: [] });
 
   const token = JSON.parse(localStorage.getItem("user"))?.token;
+
   const headerstemp = {
     Authorization: `Bearer ${token}`,
     "Content-Type": "application/json", // example header
@@ -31,12 +31,20 @@ const ContentSidebar = () => {
   };
 
   const createGroupChat = async () => {
-    try{
-      const response = await callAPI(apiUrls.createGroupChat, {} , 'post', groupData, headerstemp)
-    } catch(error){
-          
-    }
-  }
+    try {
+      const response = await callAPI(
+        apiUrls.createGroupChat,
+        {},
+        "post",
+        groupData,
+        headerstemp
+      );
+      if (response.status) {
+        setGroupOpen();
+        setGroupData({ name: "", users: [] });
+      }
+    } catch (error) {}
+  };
 
   const fetchChats = async () => {
     setLoader(true);
@@ -82,19 +90,25 @@ const ContentSidebar = () => {
     localStorage.setItem("activeChat", JSON.stringify(item));
   };
 
+  const cancelFn = () => {
+    setGroupOpen()
+  }
+
   const ListAllUsers = () => {
     return (
       loader == false &&
       friendSuggestions?.map((item) => {
-        const { Users = [] } = item;
-        const user = Users.filter((item)=>{ return  item?._id != JSON.parse(localStorage.getItem("user"))?._id})
+        const { Users = [], chatName= "group", isGroupChat="false" } = item;
+        const user = Users.filter((item) => {
+          return item?._id != JSON.parse(localStorage.getItem("user"))?._id;
+        });
         return searchQuery.length == 0 ? (
           <UserCard
-            name={user[0]?.name}
+            name={isGroupChat==true ? chatName : user[0]?.name}
             profilePicture={user[0]?.profilePicture}
             latestMessage={item?.latestMessage?.content}
             clickFn={() => {
-              user && openChat(item?.user[0]);
+              user.length > 0 && openChat(user[0]);
             }}
           />
         ) : (
@@ -132,7 +146,9 @@ const ContentSidebar = () => {
     <div className="content-sidebar active">
       <div className="d-flex justify-content-between align-items-center">
         <div className="content-sidebar-title">Chats</div>
-        <i className="fa fa-plus content-sidebar-title group-add" onClick={setGroupOpen}></i>
+        <i
+          className="fa fa-plus content-sidebar-title group-add"
+          onClick={setGroupOpen}></i>
       </div>
       <SearchBar handleSearch={handleSearch} searchQuery={searchQuery} />
       <div className="content-messages">
@@ -143,7 +159,16 @@ const ContentSidebar = () => {
           <ListAllUsers />
         </ul>
       </div>
-      {groupOpen && <CreateGroupPopup fn={setGroupOpen} users={chats} setGroupData={setGroupData} groupData={groupData}/>}
+      {groupOpen && (
+        <CreateGroupPopup
+          fn={setGroupOpen}
+          users={chats}
+          setGroupData={setGroupData}
+          groupData={groupData}
+          submitFn={createGroupChat}
+          cancelFn={cancelFn}
+        />
+      )}
     </div>
   );
 };
