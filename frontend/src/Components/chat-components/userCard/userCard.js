@@ -12,7 +12,7 @@ const UserCard = ({
       <a>
         <img
           className="content-message-image"
-          src={profilePicture == "" ? noImg : imgUrl + profilePicture}
+          src={profilePicture == "" ? noImg : profilePicture}
           alt=""
         />
         <span className="content-message-info">

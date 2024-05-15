@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import UserCard from "./userCard/userCard";
 import SearchBar from "./SearchBar/SearchBar";
 import callAPI from "../../apiUtils/apiCall";
-import { apiUrls, headers } from "../../apiConfig";
+import { apiUrls, groupImg, headers, imgUrl } from "../../apiConfig";
 import { setActiveChat } from "../../Redux/MessageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import CreateGroupPopup from "./CreateGroupPopup/CreateGroupPopup";
@@ -98,6 +98,7 @@ const ContentSidebar = () => {
     return (
       loader == false &&
       friendSuggestions?.map((item) => {
+        console.log(item)
         const { Users = [], chatName= "group", isGroupChat="false" } = item;
         const user = Users.filter((item) => {
           return item?._id != JSON.parse(localStorage.getItem("user"))?._id;
@@ -105,10 +106,10 @@ const ContentSidebar = () => {
         return searchQuery.length == 0 ? (
           <UserCard
             name={isGroupChat==true ? chatName : user[0]?.name}
-            profilePicture={user[0]?.profilePicture}
+            profilePicture={isGroupChat==true ? groupImg : imgUrl + user[0]?.profilePicture}
             latestMessage={item?.latestMessage?.content}
             clickFn={() => {
-              user.length > 0 && openChat(user[0]);
+             isGroupChat ? openChat({...item, name:chatName, profilePicture:groupImg}) : user.length > 0 && openChat(user[0]);
             }}
           />
         ) : (

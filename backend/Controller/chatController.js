@@ -2,58 +2,22 @@ const asyncHandler = require("express-async-handler");
 const chat = require("../Model/chatSchema");
 const user = require("../Model/userSchema");
 const message = require("../Model/messageSchema");
+const chatService = require("../Services/chatServices");
 
 const accessChat = asyncHandler(async (req, res) => {
-  const { userId } = req.body;
+  const { userId, isGroupChat } = req.body;
 
   if (!userId) {
     res.status(400);
-    throw new Error("userId not present");
+    throw new Error("id not present");
   }
+  
+  let response
+  if (isGroupChat) {
+    response = await chatService.groupChatAccess(req) ;
+ } else response = await chatService.privateChatAcces(req)
 
-  var isChat = await chat
-    .find({
-      isGroupChat: false,
-      $and: [
-        { Users: { $elemMatch: { $eq: userId } } },
-        { Users: { $elemMatch: { $eq: req.user._id } } },
-      ],
-    })
-    .select("-latestMessage")
-    .populate("Users", "-password");
-
-  if (isChat.length > 0) {
-    const messageList = await message.find({
-      chat: isChat[0]?._id,
-    }).select("-_id -__v -updatedAt -chat").populate("sender", "-password  -email -__v -updatedAt");
-    res.json({
-      status: true,
-      data: {
-        messages: messageList,
-        chatDetails: isChat[0],
-      },
-    });
-  } else {
-    var chatData = {
-      chatName: "private",
-      isGroupChat: false,
-      Users: [req.user._id, userId],
-    };
-
-    try {
-      const createdChat = await chat.create(chatData);
-      const FullChat = await chat
-        .findOne({ _id: createdChat._id })
-        .populate("Users", "-password");
-      res.status(200).json({
-        status: true,
-        data: FullChat,
-      });
-    } catch (error) {
-      res.status(400);
-      throw new Error(error.message);
-    }
-  }
+ res.status(200).json(response);
 });
 
 const fetchChats = asyncHandler(async (req, res) => {
@@ -70,8 +34,8 @@ const fetchChats = asyncHandler(async (req, res) => {
           select: "name profilePicture email",
         });
         res.status(200).json({
-          status:true,
-          data:results
+          status: true,
+          data: results,
         });
       });
   } catch (error) {
@@ -82,10 +46,10 @@ const fetchChats = asyncHandler(async (req, res) => {
 
 const createGroupChat = asyncHandler(async (req, res) => {
   if (!req.body.users || !req.body.name) {
-    return res.status(400).send({ message: "Please Fill all the feilds" });
+    return res.status(400).send({ message: "Please Fill all the fields" });
   }
 
-  var users = req.body.users
+  var users = req.body.users;
 
   if (users.length < 2) {
     return res

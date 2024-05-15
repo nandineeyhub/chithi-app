@@ -35,3 +35,4 @@ export const multiPartHeader = {
 };
 
 export const noImg = "https://www.svgrepo.com/show/527946/user-circle.svg"
+export const groupImg = "https://www.svgrepo.com/show/103960/group.svg"

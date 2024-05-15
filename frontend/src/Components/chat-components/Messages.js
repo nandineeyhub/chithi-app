@@ -29,13 +29,13 @@ const Messages = () => {
     });
   };
 
-  const accessChat = async (id) => {
+  const accessChat = async (id, isGroupChat) => {
     try {
       const response = await callAPI(
         apiUrls.accessChat,
         {},
         "post",
-        { userId: id },
+        { userId: id, isGroupChat:isGroupChat },
         headers
       );
       if (response.status) {
@@ -74,7 +74,7 @@ const Messages = () => {
 
   useEffect(() => {
     if (activeChatDetails && Object.keys(activeChatDetails)?.length > 0) {
-      accessChat(activeChatDetails?._id);
+      accessChat(activeChatDetails?._id, activeChatDetails?.isGroupChat);
     }
   }, [activeChatDetails?._id]);
 
