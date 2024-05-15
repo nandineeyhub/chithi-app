@@ -64,12 +64,12 @@ chatService.groupChatAccess = async (req) => {
   if (chatDetails?.length > 0) {
     const messageList = await message
       .find({
-        _id: chatDetails[0]?._id,
+        chat: chatDetails[0]._id,
       })
       .select("-_id -__v -updatedAt -chat")
       .populate("sender", "-password  -email -__v -updatedAt");
 
-    return { messages: messageList, chatDetails:chatDetails[0] };
+    return { status:true, data:{ messages: messageList, chatDetails:chatDetails[0] }};
   }
 };
 

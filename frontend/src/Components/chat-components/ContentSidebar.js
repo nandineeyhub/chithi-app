@@ -98,7 +98,7 @@ const ContentSidebar = () => {
     return (
       loader == false &&
       friendSuggestions?.map((item) => {
-        console.log(item)
+
         const { Users = [], chatName= "group", isGroupChat="false" } = item;
         const user = Users.filter((item) => {
           return item?._id != JSON.parse(localStorage.getItem("user"))?._id;

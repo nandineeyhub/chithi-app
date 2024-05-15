@@ -17,7 +17,7 @@ const accessChat = asyncHandler(async (req, res) => {
     response = await chatService.groupChatAccess(req) ;
  } else response = await chatService.privateChatAcces(req)
 
- res.status(200).json(response);
+   res.status(200).json(response);
 });
 
 const fetchChats = asyncHandler(async (req, res) => {

@@ -52,7 +52,7 @@ const Index = ({ profileDetails }) => {
         details,
         headers
       );
-      console.log(response);
+
       if (response.status) {
         dispatch(setProfile(details));
       }

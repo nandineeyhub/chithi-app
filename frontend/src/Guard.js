@@ -7,7 +7,7 @@ const AuthRequired = (props) => {
   
   useEffect(()=>{
     if (!token) {
-        console.log("hi")
+    
         navigate("/");
       } 
   },[token])

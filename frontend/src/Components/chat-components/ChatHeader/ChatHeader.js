@@ -2,9 +2,9 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { imgUrl, noImg } from "../../../apiConfig";
 
-const ChatHeader = ({ name="User", profilePicture="" }) => {
+const ChatHeader = ({ name="User", profilePicture="", isGroupChat=false }) => {
   
-  const profilePicUrl = profilePicture == "" ? noImg : imgUrl+profilePicture
+  const profilePicUrl = profilePicture == "" ? noImg : isGroupChat ? profilePicture : imgUrl+profilePicture
 
   return (
     <div className="conversation-top">

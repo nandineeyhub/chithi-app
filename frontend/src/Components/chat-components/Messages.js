@@ -62,7 +62,7 @@ const Messages = () => {
         });
         appendNewMessage(response?.data?.message);
       }
-      console.log(response.status);
+
     } catch (error) {}
   };
 

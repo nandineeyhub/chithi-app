@@ -33,7 +33,7 @@ const MessageWrapper = ({ messages = [] }) => {
       }
     }
   };
-  console.log(messageList);
+
   useEffect(() => {
     serializeMessage();
   }, [messages.length]);
@@ -46,9 +46,7 @@ const MessageWrapper = ({ messages = [] }) => {
 export default MessageWrapper;
 
 const MessageContainer = ({ item }) => {
-  console.log(
-    item[0]?.sender?._id == JSON.parse(localStorage.getItem("user"))?._id
-  );
+
   const selfStatus =
     item[0]?.sender?._id != JSON.parse(localStorage.getItem("user"))?._id
       ? "me"
