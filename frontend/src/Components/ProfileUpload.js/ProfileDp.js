@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { imgUrl } from "../../apiConfig";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
+
 const ProfileDp = ({  uploadDp }) => {
   const dp = useSelector(store => store.profile.profileDetails.profilePicture)
   const openFileref = useRef();

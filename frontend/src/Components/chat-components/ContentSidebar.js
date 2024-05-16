@@ -91,25 +91,32 @@ const ContentSidebar = () => {
   };
 
   const cancelFn = () => {
-    setGroupOpen()
-  }
+    setGroupOpen();
+  };
 
   const ListAllUsers = () => {
     return (
       loader == false &&
       friendSuggestions?.map((item) => {
-
-        const { Users = [], chatName= "group", isGroupChat="false" } = item;
+        const { Users = [], chatName = "group", isGroupChat = "false" } = item;
         const user = Users.filter((item) => {
           return item?._id != JSON.parse(localStorage.getItem("user"))?._id;
         });
         return searchQuery.length == 0 ? (
           <UserCard
-            name={isGroupChat==true ? chatName : user[0]?.name}
-            profilePicture={isGroupChat==true ? groupImg : imgUrl + user[0]?.profilePicture}
+            name={isGroupChat == true ? chatName : user[0]?.name}
+            profilePicture={
+              isGroupChat == true ? groupImg : imgUrl + user[0]?.profilePicture
+            }
             latestMessage={item?.latestMessage?.content}
             clickFn={() => {
-             isGroupChat ? openChat({...item, name:chatName, profilePicture:groupImg}) : user.length > 0 && openChat(user[0]);
+              isGroupChat
+                ? openChat({
+                    ...item,
+                    name: chatName,
+                    profilePicture: groupImg,
+                  })
+                : user.length > 0 && openChat(user[0]);
             }}
           />
         ) : (
@@ -147,9 +154,12 @@ const ContentSidebar = () => {
     <div className="content-sidebar active">
       <div className="d-flex justify-content-between align-items-center">
         <div className="content-sidebar-title">Chats</div>
-        <i
-          className="fa fa-plus content-sidebar-title group-add"
-          onClick={setGroupOpen}></i>
+        <div style={{ marginTop: "auto", position: "relative" }}>
+          <i
+            className="fa fa-plus content-sidebar-title group-add"
+            onClick={setGroupOpen}></i>
+          <h1 className="group-add-popup">Hii</h1>
+        </div>
       </div>
       <SearchBar handleSearch={handleSearch} searchQuery={searchQuery} />
       <div className="content-messages">
