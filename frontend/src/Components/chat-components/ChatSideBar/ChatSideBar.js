@@ -27,16 +27,7 @@ const ChatSideBar = () => {
     <aside className="chat-sidebar">
      
       <ul className="chat-sidebar-menu">
-        {/* <li>
-          <i className="fa fa-comment my-2 text-success"></i>
-        </li>
-        <li>
-          <i className="fa fa-phone my-2 text-secondary"></i>
-        </li>
-        <li>
-          <i className="fa fa-star my-2 text-secondary"></i>
-        </li> */}
-  
+    
         <li className="chat-sidebar-profile">
           <MidProfilePic clickFn={setOpen} clickref={clickref} img={profileDetails?.profilePicture}/>
           {open && <Sidebarpopup open={open} clickFn={setOpen} clickref={clickref} />}
