@@ -15,6 +15,7 @@ const Sidebarpopup = ({ open, clickFn, clickref }) => {
     <ul
       ref={clickref}
       id="popup"
+      style={{backgroundColor:"#f0f2f5"}}
       className={`chat-sidebar-profile-dropdown ${open ? "active" : ""}`}>
       <li>
         <Link

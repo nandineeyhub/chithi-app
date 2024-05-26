@@ -12,7 +12,12 @@ const messageSchema = mongoose.Schema({
     chat:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"chat"
-    }
+    },
+    forward:{
+        type:Boolean,
+        default:false
+    },
+    deletedBy:[String]
 },{
     timestamps:true
 })

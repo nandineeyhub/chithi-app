@@ -9,15 +9,58 @@ const accessChat = asyncHandler(async (req, res) => {
 
   if (!userId) {
     res.status(400);
-    throw new Error("id not present");
+    throw new Error("Id not present");
   }
-  
-  let response
-  if (isGroupChat) {
-    response = await chatService.groupChatAccess(req) ;
- } else response = await chatService.privateChatAcces(req)
 
-   res.status(200).json(response);
+  let response;
+  if (isGroupChat) {
+    response = await chatService.groupChatAccess(req);
+  } else response = await chatService.privateChatAcces(req);
+  res.status(200).json(response);
+});
+
+const deleteMessage = asyncHandler(async (req, res) => {
+  const { messageId } = req.body;
+
+  const message = message.find({ _id: messageId });
+  if (message.length == 0) {
+    res.status(400);
+    throw new Error("Message not found");
+  } else {
+    const newData = message.findByIdAndUpdate(
+      messageId,
+      {
+        $push: { deletedBy: req.user },
+      },
+      {
+        new: true,
+      }
+    );
+
+    res.status(200).json({
+      status: true,
+      data: newData,
+    });
+  }
+});
+
+const forwardMessage = asyncHandler(async (req, res) => {
+  const { messageId, chatId } = req.body;
+
+  const message = message.find({ _id: messageId });
+
+  if (message.length > 0) {
+    var newMessage = {
+      sender: req.user._id,
+      content: content,
+      chat: chatId,
+      forward:true
+    };
+
+  } else {
+    res.status(400);
+    throw new Error("Message not found");
+  }
 });
 
 const fetchChats = asyncHandler(async (req, res) => {
@@ -72,7 +115,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
       .populate("Users", "-password")
       .populate("groupAdmin", "-password");
 
-    res.status(200).json(fullGroupChat);
+    res.status(200).json({ data: fullGroupChat, status: true });
   } catch (error) {
     res.status(400);
     throw new Error(error.message);
@@ -159,4 +202,6 @@ module.exports = {
   createGroupChat,
   removeFromGroup,
   addToGroup,
+  deleteMessage,
+  forwardMessage
 };

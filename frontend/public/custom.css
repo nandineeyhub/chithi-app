@@ -175,7 +175,7 @@ form .text h3 a:hover{
   background: #fff;
   padding: 20px;
   border-radius: 6px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0);
+  box-shadow: 0 5px 10px rgba(176, 175, 175, 0);
 }
 
 .spinner-box {

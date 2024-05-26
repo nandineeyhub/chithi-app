@@ -7,17 +7,14 @@ import Messages from "../Messages";
 const ChatWindow = () => {
   return (
     <>
-   
       <section className="chat-section">
         <div className="chat-container">
-         
           <ChatSideBar />
-        
+
           <div className="chat-content">
-           
             <ContentSidebar />
-         
-             <Messages/>
+
+            <Messages />
           </div>
         </div>
       </section>

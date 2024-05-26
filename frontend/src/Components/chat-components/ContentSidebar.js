@@ -152,13 +152,25 @@ const ContentSidebar = () => {
 
   return (
     <div className="content-sidebar active">
-      <div className="d-flex justify-content-between align-items-center">
-        <div className="content-sidebar-title">Chats</div>
+      <div className="d-flex justify-content-between align-items-center content-sidebar-title">
+        <div className="">Chats</div>
         <div style={{ marginTop: "auto", position: "relative" }}>
           <i
             className="fa fa-plus content-sidebar-title group-add"
-            onClick={setGroupOpen}></i>
-          <h1 className="group-add-popup">Hii</h1>
+            onClick={setGroupOpen}
+          ></i>
+          <div className="group-add-popup">
+            {groupOpen && (
+              <CreateGroupPopup
+                fn={setGroupOpen}
+                users={chats}
+                setGroupData={setGroupData}
+                groupData={groupData}
+                submitFn={createGroupChat}
+                cancelFn={cancelFn}
+              />
+            )}
+          </div>
         </div>
       </div>
       <SearchBar handleSearch={handleSearch} searchQuery={searchQuery} />
@@ -170,16 +182,6 @@ const ContentSidebar = () => {
           <ListAllUsers />
         </ul>
       </div>
-      {groupOpen && (
-        <CreateGroupPopup
-          fn={setGroupOpen}
-          users={chats}
-          setGroupData={setGroupData}
-          groupData={groupData}
-          submitFn={createGroupChat}
-          cancelFn={cancelFn}
-        />
-      )}
     </div>
   );
 };
