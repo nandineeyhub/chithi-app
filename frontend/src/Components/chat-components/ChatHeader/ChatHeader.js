@@ -1,5 +1,7 @@
 import React from "react";
 import { imgUrl, noImg } from "../../../apiConfig";
+import KidPopUp from "../PopupWrapper/KidPopUp";
+import GroupChatOptionPopup from "../PopupWrapper/GroupChatOptionPopup";
 
 const ChatHeader = ({ name="User", profilePicture="", isGroupChat=false, Users=[] }) => {
   
@@ -35,8 +37,11 @@ const ChatHeader = ({ name="User", profilePicture="", isGroupChat=false, Users=[
         <button type="button">
           <i className="fa fa-video-camera" />
         </button>
-        <button type="button">
+        <button type="button"  style={{ marginTop: "auto", position: "relative" }}>
           <i className="fa fa-ellipsis-v" />
+          <div className="group-add-popup">
+              <GroupChatOptionPopup/>
+              </div>
         </button>
       </div>
     </div>

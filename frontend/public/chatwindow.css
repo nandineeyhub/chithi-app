@@ -125,7 +125,7 @@
     border-radius: 10px;
     padding: 0px 0px;
     margin-bottom: 3px;
-    visibility: hidden;
+  
 
 }
 .chat-sidebar-profile .chat-sidebar-profile-dropdown.active {
@@ -711,6 +711,15 @@
     box-shadow: rgba(231, 231, 231, 0.16) 0px 1px 4px;
     overflow-y: scroll;
 }
+
+.smallPopup{
+    display: flex;
+    align-items: center;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: var(--slate-400);
+    font-size: 14px;
+}
 /* end: Conversation */
 
 
@@ -820,5 +829,7 @@
         display: flex;
         align-items: flex-end;
     }
+
+
 }
 /* end: Breakpoints */
