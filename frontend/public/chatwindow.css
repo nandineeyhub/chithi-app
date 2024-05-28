@@ -715,7 +715,7 @@
     display: none;
   }
 
-.group-add-popup li:hover {
+.listItem:hover {
     background-color: #026913;
     color:  white;
     border-radius: 10px;

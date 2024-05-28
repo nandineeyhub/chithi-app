@@ -3,16 +3,16 @@ import React from "react";
 const GroupChatOptionPopup = ({text = "", fn, fnView}) => {
   return (
     <div
-      className=" text-start"
-      style={{ backgroundColor: "#f0f2f5", width: "200px" }}>
+      className="text-start"
+      style={{ backgroundColor: "#f0f2f5", width: "170px", fontSize:"14px",  borderRadius:"10px"}}>
   
-        <div className="d-flex align-items-center gap-3 p-3" onClick={()=>{
+        <div className="d-flex align-items-center gap-3 p-3 listItem" onClick={()=>{
           if(fn) fn()
         }}>
           <i className="fa fa-sign-out" />
           <span>{text}</span>
         </div>
-        <div className=" d-flex align-items-center gap-3 p-3" onClick={()=>{
+        <div className=" d-flex align-items-center gap-3 p-3 listItem" onClick={()=>{
           if(fnView) fnView()
         }}>
           <i className="fa fa-eye" />
