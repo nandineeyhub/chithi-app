@@ -708,8 +708,17 @@
     right:5px;
     z-index: 2;
     opacity: 1;
-    box-shadow: rgba(231, 231, 231, 0.16) 0px 1px 4px;
+    box-shadow: rgba(211, 154, 154, 0.16) 0px 1px 4px;
     overflow-y: scroll;
+}
+.group-add-popup::-webkit-scrollbar {
+    display: none;
+  }
+
+.group-add-popup li:hover {
+    background-color: #026913;
+    color:  white;
+    border-radius: 10px;
 }
 
 .smallPopup{

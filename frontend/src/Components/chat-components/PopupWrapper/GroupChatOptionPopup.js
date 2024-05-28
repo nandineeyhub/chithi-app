@@ -1,15 +1,26 @@
-import React from 'react'
-import KidPopUp from './KidPopUp'
+import React from "react";
 
-const GroupChatOptionPopup = () => {
+const GroupChatOptionPopup = ({text = "", fn, fnView}) => {
   return (
-    <div className="card text-start" style={{ backgroundColor:"#f0f2f5", width:"200px"}}>
-        <ul style={{listStyleType:"none", fontSize: "14px"}} className='px-3 py-2'>
-            <li className=' d-flex align-items-center gap-3 my-2'><i className="fa fa-sign-out"/><span>Leave group</span></li>
-            <li className=' d-flex align-items-center gap-3 '><i className="fa fa-sign-out" /><span>Remove parcipant</span></li>
-        </ul>
-    </div>
-  )
-}
+    <div
+      className=" text-start"
+      style={{ backgroundColor: "#f0f2f5", width: "200px" }}>
+  
+        <div className="d-flex align-items-center gap-3 p-3" onClick={()=>{
+          if(fn) fn()
+        }}>
+          <i className="fa fa-sign-out" />
+          <span>{text}</span>
+        </div>
+        <div className=" d-flex align-items-center gap-3 p-3" onClick={()=>{
+          if(fnView) fnView()
+        }}>
+          <i className="fa fa-eye" />
+          <span>View Details</span>
+        </div>
 
-export default GroupChatOptionPopup
+    </div>
+  );
+};
+
+export default GroupChatOptionPopup;

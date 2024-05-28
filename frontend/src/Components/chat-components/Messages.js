@@ -10,9 +10,11 @@ import { apiUrls, headers } from "../../apiConfig";
 import DefaultChatWindow from "./DefaultChatWindow";
 
 const Messages = () => {
+
   const [chatDetails, setChatDetails] = useState({});
   const [messageBody, setMessageBody] = useState({ chatId: "", content: "" });
   const activeChatDetails = useSelector((store) => store.messages.activeChat);
+  
   const dispatch = useDispatch();
 
   const handleMessage = (e) => {

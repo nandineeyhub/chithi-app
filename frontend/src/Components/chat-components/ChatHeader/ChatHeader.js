@@ -1,18 +1,37 @@
 import React from "react";
 import { imgUrl, noImg } from "../../../apiConfig";
-import KidPopUp from "../PopupWrapper/KidPopUp";
 import GroupChatOptionPopup from "../PopupWrapper/GroupChatOptionPopup";
 
-const ChatHeader = ({ name="User", profilePicture="", isGroupChat=false, Users=[] }) => {
-  
-  const userDetails = JSON.parse(localStorage.getItem("user"))
-  const profilePicUrl = profilePicture == "" ? noImg : isGroupChat ? profilePicture : imgUrl+profilePicture
-  const conversationSubtitle =  isGroupChat ? <> You, {Users?.map((user, i)=>{
-    if(user._id != userDetails._id){ 
-      const member = i+1 != (Users.length) ? " "+ user.name + "," : " "+ user.name + "."
-      return member
-    }
-  })}</>  : "online"
+const ChatHeader = ({
+  name = "User",
+  profilePicture = "",
+  isGroupChat = false,
+  Users = [],
+}) => {
+  const userDetails = JSON.parse(localStorage.getItem("user"));
+  const profilePicUrl =
+    profilePicture == ""
+      ? noImg
+      : isGroupChat
+      ? profilePicture
+      : imgUrl + profilePicture;
+  const conversationSubtitle = isGroupChat ? (
+    <>
+      {" "}
+      You,{" "}
+      {Users?.map((user, i) => {
+        if (user._id != userDetails._id) {
+          const member =
+            i + 1 != Users.length
+              ? " " + user.name + ","
+              : " " + user.name + ".";
+          return member;
+        }
+      })}
+    </>
+  ) : (
+    "online"
+  );
 
   return (
     <div className="conversation-top">
@@ -22,12 +41,14 @@ const ChatHeader = ({ name="User", profilePicture="", isGroupChat=false, Users=[
       <div className="conversation-user">
         <img
           className="conversation-user-image"
-          src={profilePicUrl}                                                                                            
+          src={profilePicUrl}
           alt="user"
         />
         <div>
           <div className="conversation-user-name">{name}</div>
-          <div className="conversation-user-status online">{conversationSubtitle}</div>
+          <div className="conversation-user-status online">
+            {conversationSubtitle}
+          </div>
         </div>
       </div>
       <div className="conversation-buttons">
@@ -37,11 +58,13 @@ const ChatHeader = ({ name="User", profilePicture="", isGroupChat=false, Users=[
         <button type="button">
           <i className="fa fa-video-camera" />
         </button>
-        <button type="button"  style={{ marginTop: "auto", position: "relative" }}>
+        <button
+          type="button"
+          style={{ marginTop: "auto", position: "relative" }}>
           <i className="fa fa-ellipsis-v" />
           <div className="group-add-popup">
-              <GroupChatOptionPopup/>
-              </div>
+            <GroupChatOptionPopup text="Leave Group" />
+          </div>
         </button>
       </div>
     </div>
