@@ -5,9 +5,13 @@ const callAPI = async (
   params = {},
   method,
   data = null,
-  headers = {}
+
 ) => {
- 
+  const token = JSON.parse(localStorage.getItem("user"))?.token;
+  const headers = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "application/json", // example header
+  };
   let response;
   switch (method.toLowerCase()) {
     case "get":

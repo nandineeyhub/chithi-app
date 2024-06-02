@@ -1,13 +1,28 @@
-import React from "react";
-import { imgUrl, noImg } from "../../../apiConfig";
+import React, { useEffect, useRef, useState } from "react";
+import { apiUrls, imgUrl, noImg } from "../../../apiConfig";
 import GroupChatOptionPopup from "../PopupWrapper/GroupChatOptionPopup";
+import { usePopUp } from "../../../customHooks";
+import Index from "../../ProfileUpload.js/Index";
+import { useSelector } from "react-redux";
+import ViewGroupPopup from "../viewGroupPopup/ViewGroupPopup";
+import AddToGroup from "../AddToGroup/AddToGroup";
+import callAPI from "../../../apiUtils/apiCall";
 
 const ChatHeader = ({
   name = "User",
   profilePicture = "",
   isGroupChat = false,
+  groupAdmin,
   Users = [],
 }) => {
+  const [open, setOpen] = usePopUp();
+  const [profileOpen, setProfileOpen] = usePopUp();
+  const [addOpen, setAddOpen] = usePopUp()
+  const [addValue, setAddValue] = useState()
+  const [group, setGroup] = useState()
+  const clickref = useRef();
+  const activeChatDetails = useSelector((store) => store.messages.activeChat);
+
   const userDetails = JSON.parse(localStorage.getItem("user"));
   const profilePicUrl =
     profilePicture == ""
@@ -17,7 +32,6 @@ const ChatHeader = ({
       : imgUrl + profilePicture;
   const conversationSubtitle = isGroupChat ? (
     <>
-      {" "}
       You,{" "}
       {Users?.map((user, i) => {
         if (user._id != userDetails._id) {
@@ -32,6 +46,46 @@ const ChatHeader = ({
   ) : (
     "online"
   );
+
+  const fetchChats = async () => {
+        
+    try {
+      const response = await callAPI(
+        apiUrls.fetchChats,
+        {},
+        "get",
+        null
+      );
+      if (response.status) {
+       setGroup(response.data?.filter((value)=>{
+        return value?.isGroupChat == true
+       }))
+      }
+    } catch (error) {      
+    }
+  };
+
+  const chatOptionsText = () => {
+    if (isGroupChat) {
+      if (groupAdmin?._id == userDetails._id) {
+        return "Remove friend";
+      } else return "Leave Group";
+    } else return "Add to Group";
+  };
+  
+  const fn = () => {
+    if(isGroupChat){
+
+    } else {
+      return setAddOpen
+    }
+  }
+
+  useEffect(()=>{
+    if(addOpen){
+      fetchChats()
+    }
+  },[addOpen])
 
   return (
     <div className="conversation-top">
@@ -52,21 +106,36 @@ const ChatHeader = ({
         </div>
       </div>
       <div className="conversation-buttons">
-        <button type="button">
+        {/* <button type="button">
           <i className="fa fa-phone" />
         </button>
         <button type="button">
           <i className="fa fa-video-camera" />
-        </button>
-        <button
-          type="button"
-          style={{ marginTop: "auto", position: "relative" }}>
-          <i className="fa fa-ellipsis-v" />
+        </button> */}
+        <div type="button" style={{ marginTop: "auto", position: "relative" }}>
+          <i className="fa fa-ellipsis-v" onClick={setOpen} />
           <div className="group-add-popup">
-            <GroupChatOptionPopup text="Leave Group" />
+            {open && (
+              <GroupChatOptionPopup
+                text={chatOptionsText()}
+                clickFn={setOpen}
+                clickref={clickref}
+                fn={fn}
+                fnView={setProfileOpen}
+              />
+            )}
           </div>
-        </button>
+        </div>
       </div>
+      {profileOpen &&
+        (isGroupChat ? (
+          <ViewGroupPopup {...activeChatDetails} fn={setProfileOpen} />
+        ) : (
+          <Index profileDetails={activeChatDetails} fn={setProfileOpen} />
+        ))}
+        {
+          addOpen && <AddToGroup/>
+        }
     </div>
   );
 };

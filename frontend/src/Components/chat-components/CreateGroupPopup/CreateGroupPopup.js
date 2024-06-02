@@ -8,28 +8,29 @@ const CreateGroupPopup = ({ fn, users = [], submitFn, setGroupData, groupData })
   const ListAllUsers = () => {
     return users?.map((item) => {
       const { Users = [], isGroupChat = false } = item;
-      const imgUrlString = imgUrl + Users[1]?.profilePicture;
+      const userss = Users.filter((user)=>{ return user._id != JSON.parse(localStorage.getItem("user"))?._id})
+      const imgUrlString = imgUrl + userss[0]?.profilePicture;
       return (
         isGroupChat == false && (
           <div className="d-flex justify-content-between align-items-center">
             <div className="d-flex justify-content-start align-items-center p-2">
               <img
                 className="content-message-image"
-                src={Users[1]?.profilePicture == "" ? noImg : imgUrlString}
+                src={userss[0]?.profilePicture == "" ? noImg : imgUrlString}
                 alt="user"
               />
               <div>
-                <div>{Users[1]?.name}</div>
-                <div>{Users[1]?.email}</div>
+                <div>{userss[0]?.name}</div>
+                <div>{userss[0]?.email}</div>
               </div>
             </div>
             <div></div>
             <input
               type="checkbox"
               style={{ height: "15px", width: "15px" }}
-              checked={groupData?.users?.includes(Users[1]?._id)}
+              checked={groupData?.users?.includes(userss[0]?._id)}
               onChange={() => {
-                handleGroupMembers(Users[1]?._id);
+                handleGroupMembers(userss[0]?._id);
               }}
             />
           </div>

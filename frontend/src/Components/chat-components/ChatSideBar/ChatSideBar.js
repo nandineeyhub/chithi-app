@@ -4,7 +4,7 @@ import { usePopUp } from "../../../customHooks";
 import Sidebarpopup from "../../Popups/sidebarpopup";
 import { useDispatch, useSelector } from "react-redux";
 import Index from "../../ProfileUpload.js/Index";
-import { setProfile } from "../../../Redux/ProfileSlice";
+import { handleProfileOpen, setProfile } from "../../../Redux/ProfileSlice";
 
 
 
@@ -33,7 +33,9 @@ const ChatSideBar = () => {
           {open && <Sidebarpopup open={open} clickFn={setOpen} clickref={clickref} />}
         </li>
       </ul>
-      { profileOpen && <Index profileDetails={profileDetails} />}
+      { profileOpen && <Index profileDetails={profileDetails} action={true} fn={()=>{
+        dispatch(handleProfileOpen());
+      }}/>}
     </aside>
   );
 };
