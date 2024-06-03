@@ -15,13 +15,14 @@ const ChatHeader = ({
   groupAdmin,
   Users = [],
 }) => {
+  const activeChatDetails = useSelector((store) => store.messages.activeChat);
   const [open, setOpen] = usePopUp();
   const [profileOpen, setProfileOpen] = usePopUp();
   const [addOpen, setAddOpen] = usePopUp()
-  const [addValue, setAddValue] = useState()
+  const [addValue, setAddValue] = useState({userId:activeChatDetails?._id, chatId:""})
   const [group, setGroup] = useState()
   const clickref = useRef();
-  const activeChatDetails = useSelector((store) => store.messages.activeChat);
+
 
   const userDetails = JSON.parse(localStorage.getItem("user"));
   const profilePicUrl =
@@ -120,7 +121,7 @@ const ChatHeader = ({
                 text={chatOptionsText()}
                 clickFn={setOpen}
                 clickref={clickref}
-                fn={fn}
+                fn={fn()}
                 fnView={setProfileOpen}
               />
             )}
@@ -134,7 +135,7 @@ const ChatHeader = ({
           <Index profileDetails={activeChatDetails} fn={setProfileOpen} />
         ))}
         {
-          addOpen && <AddToGroup/>
+          addOpen && <AddToGroup group={group} fn={setAddOpen} setGroupfn={setAddValue} addValue={addValue}/>
         }
     </div>
   );

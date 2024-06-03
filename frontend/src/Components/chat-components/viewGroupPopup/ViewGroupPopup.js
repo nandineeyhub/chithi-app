@@ -23,6 +23,8 @@ const ViewGroupPopup = ({ fn, Users = [], chatName = "" }) => {
       );
     });
   };
+
+
   return (
     <PopupWrapper>
       <div className="d-flex justify-content-between align-items-center">
