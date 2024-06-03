@@ -1,4 +1,5 @@
 
+
 export const baseURL = "http://localhost:8000/api/";
 export const imgUrl = "http://localhost:8000/api/users/images/"
 
@@ -16,6 +17,7 @@ export const apiUrls = {
   sendMessage:"chat/sendMessage",
   
   createGroupChat:"chat/createGroupChat",
+  addToGroup:"chat/addToGroup",
 };
 
 const token = JSON.parse(localStorage.getItem("user"))?.token;
