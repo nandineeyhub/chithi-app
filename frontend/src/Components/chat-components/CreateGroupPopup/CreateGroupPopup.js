@@ -24,7 +24,7 @@ const CreateGroupPopup = ({ fn, users = [], submitFn, setGroupData, groupData })
                 <div>{userss[0]?.email}</div>
               </div>
             </div>
-            <div></div>
+         
             <input
               type="checkbox"
               style={{ height: "15px", width: "15px" }}
