@@ -18,11 +18,13 @@ const ChatHeader = ({
   const activeChatDetails = useSelector((store) => store.messages.activeChat);
   const [open, setOpen] = usePopUp();
   const [profileOpen, setProfileOpen] = usePopUp();
-  const [addOpen, setAddOpen] = usePopUp()
-  const [addValue, setAddValue] = useState({userId:activeChatDetails?._id, chatId:""})
-  const [group, setGroup] = useState()
+  const [addOpen, setAddOpen] = usePopUp();
+  const [addValue, setAddValue] = useState({
+    userId: activeChatDetails?._id,
+    chatId: "",
+  });
+  const [group, setGroup] = useState();
   const clickref = useRef();
-
 
   const userDetails = JSON.parse(localStorage.getItem("user"));
   const profilePicUrl =
@@ -49,21 +51,30 @@ const ChatHeader = ({
   );
 
   const fetchChats = async () => {
-        
     try {
-      const response = await callAPI(
-        apiUrls.fetchChats,
-        {},
-        "get",
-        null
-      );
+      const response = await callAPI(apiUrls.fetchChats, {}, "get", null);
       if (response.status) {
-       setGroup(response.data?.filter((value)=>{
-        return value?.isGroupChat == true
-       }))
+       
+          const data = response.data?.filter((value) => {
+            return value?.isGroupChat == true 
+          })
+
+          data.filter((group)=>{
+              return group?.Users?.includes(activeChatDetails?._id) == false
+          })
+       
       }
-    } catch (error) {      
-    }
+    } catch (error) {}
+  };
+
+  const addToGroup = async () => {
+    try {
+      const response = await callAPI(apiUrls.addToGroup, {}, "post", addValue);
+      if (response.status) {
+        setAddOpen();
+        setAddValue({ ...addValue, chatId: "" });
+      }
+    } catch (error) {}
   };
 
   const chatOptionsText = () => {
@@ -73,20 +84,19 @@ const ChatHeader = ({
       } else return "Leave Group";
     } else return "Add to Group";
   };
-  
+
   const fn = () => {
-    if(isGroupChat){
-
+    if (isGroupChat) {
     } else {
-      return setAddOpen
+      return setAddOpen;
     }
-  }
+  };
 
-  useEffect(()=>{
-    if(addOpen){
-      fetchChats()
+  useEffect(() => {
+    if (addOpen) {
+      fetchChats();
     }
-  },[addOpen])
+  }, [addOpen]);
 
   return (
     <div className="conversation-top">
@@ -134,9 +144,15 @@ const ChatHeader = ({
         ) : (
           <Index profileDetails={activeChatDetails} fn={setProfileOpen} />
         ))}
-        {
-          addOpen && <AddToGroup group={group} fn={setAddOpen} setGroupfn={setAddValue} addValue={addValue}/>
-        }
+      {addOpen && (
+        <AddToGroup
+          group={group}
+          fn={setAddOpen}
+          setGroupfn={setAddValue}
+          addValue={addValue}
+          submitfn={addToGroup}
+        />
+      )}
     </div>
   );
 };

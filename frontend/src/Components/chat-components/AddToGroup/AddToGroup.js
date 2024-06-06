@@ -2,10 +2,11 @@ import React from "react";
 import PopupWrapper from "../PopupWrapper/PopupWrapper";
 import CrossIcon from "../../CrossIcon/CrossIcon";
 import { groupImg } from "../../../apiConfig";
+import ActionButtons from "../ActionButtons/ActionButtons";
 
-const AddToGroup = ({ group = [], fn, setGroupfn, addValue }) => {
+const AddToGroup = ({ group = [], fn, setGroupfn, addValue, submitfn }) => {
   const ListAllUsers = () => {
-    return group?.map((item) => {
+    return group?.length > 0 ? group?.map((item) => {
       return (
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex justify-content-start align-items-center p-2">
@@ -25,7 +26,7 @@ const AddToGroup = ({ group = [], fn, setGroupfn, addValue }) => {
           />
         </div>
       );
-    });
+    }) : <div className="d-flex justify-content-center align-items-center">No new group found</div>
   };
 
   return (
@@ -44,6 +45,11 @@ const AddToGroup = ({ group = [], fn, setGroupfn, addValue }) => {
         className="my-2 w-100">
         <ListAllUsers />
       </div>
+      {group?.length > 0 && <ActionButtons submitFn={submitfn} cancelFn={() => {
+            fn();
+            setGroupfn({ ...addValue, chatId: "" })
+          }}/>}
+
     </PopupWrapper>
   );
 };

@@ -178,20 +178,20 @@ const addToGroup = asyncHandler(async (req, res) => {
     .findByIdAndUpdate(
       chatId,
       {
-        $push: { users: userId },
+        $push: { Users: userId },
       },
       {
         new: true,
       }
     )
-    .populate("users", "-password")
+    .populate("Users", "-password")
     .populate("groupAdmin", "-password");
 
   if (!added) {
     res.status(404);
     throw new Error("Chat Not Found");
   } else {
-    res.json(added);
+    res.json({data:added, status:true});
   }
 });
 
