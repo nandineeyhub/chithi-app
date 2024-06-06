@@ -3,10 +3,10 @@ import CrossIcon from "../../CrossIcon/CrossIcon";
 import PopupWrapper from "../PopupWrapper/PopupWrapper";
 import { imgUrl, noImg } from "../../../apiConfig";
 
-const ViewGroupPopup = ({ fn, Users = [], chatName = "" }) => {
+const ViewGroupPopup = ({ fn, Users = [], chatName = "", groupAdmin }) => {
   const ListAllUsers = () => {
     return Users?.map((item) => {
-      const { name = "", email = "" } = item;
+      const { name = "", email = "", _id=""} = item;
       const imgUrlString = imgUrl + item?.profilePicture;
       return (
         <div className="d-flex justify-content-between align-items-center">
@@ -21,7 +21,7 @@ const ViewGroupPopup = ({ fn, Users = [], chatName = "" }) => {
               <div>{email}</div>
             </div>
           </div>
-          <span className="text-danger">Remove</span>
+          <span className={groupAdmin?._id == _id  ? "text-success" : "text-danger"}>{groupAdmin?._id == _id ? "Admin":"Remove"}</span>
         </div>
       );
     });
