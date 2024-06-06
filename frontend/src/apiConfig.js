@@ -18,6 +18,7 @@ export const apiUrls = {
   
   createGroupChat:"chat/createGroupChat",
   addToGroup:"chat/addToGroup",
+  removeFromGroup:"chat/removeFromGroup"
 };
 
 const token = JSON.parse(localStorage.getItem("user"))?.token;

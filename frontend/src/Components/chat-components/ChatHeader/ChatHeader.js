@@ -19,6 +19,7 @@ const ChatHeader = ({
   const [open, setOpen] = usePopUp();
   const [profileOpen, setProfileOpen] = usePopUp();
   const [addOpen, setAddOpen] = usePopUp();
+  const [removeOpen, setRemoveOpen] = usePopUp()
   const [addValue, setAddValue] = useState({
     userId: activeChatDetails?._id,
     chatId: "",
@@ -76,9 +77,21 @@ const ChatHeader = ({
       }
     } catch (error) {}
   };
+<<<<<<< HEAD
   const removeFromGroup = () =>{
     
   }
+=======
+
+  const removeFromGroup = async () => {
+    try{
+      const response = await callAPI(apiUrls.removeFromGroup, {}, "post", addValue);
+    }catch(error){
+
+    }
+  }
+
+>>>>>>> 934c5ecdf6c67b17676f633925aa38f52d5fd67a
   const chatOptionsText = () => {
     if (isGroupChat) {
       if (groupAdmin?._id == userDetails._id) {
@@ -89,6 +102,7 @@ const ChatHeader = ({
 
   const fn = () => {
     if (isGroupChat) {
+      if(groupAdmin?._id == userDetails._id) return setRemoveOpen
     } else {
       return setAddOpen;
     }
@@ -155,6 +169,17 @@ const ChatHeader = ({
           submitfn={addToGroup}
         />
       )}
+      {
+        removeOpen && (
+          <ViewGroupPopup
+            group={group}
+            fn={setAddOpen}
+            setGroupfn={setAddValue}
+            addValue={addValue}
+            submitfn={addToGroup}
+          />
+        )
+      }
     </div>
   );
 };
