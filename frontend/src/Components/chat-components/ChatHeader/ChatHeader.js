@@ -76,7 +76,9 @@ const ChatHeader = ({
       }
     } catch (error) {}
   };
-
+  const removeFromGroup = () =>{
+    
+  }
   const chatOptionsText = () => {
     if (isGroupChat) {
       if (groupAdmin?._id == userDetails._id) {
