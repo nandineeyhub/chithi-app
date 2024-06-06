@@ -2,13 +2,22 @@ import React from "react";
 import CrossIcon from "../../CrossIcon/CrossIcon";
 import PopupWrapper from "../PopupWrapper/PopupWrapper";
 import { imgUrl, noImg } from "../../../apiConfig";
+import ActionButtons from "../ActionButtons/ActionButtons";
 
-const ViewGroupPopup = ({ fn, Users = [], chatName = "", groupAdmin }) => {
+const ViewGroupPopup = ({
+  fn,
+  Users = [],
+  chatName = "",
+  submitfn,
+  groupAdmin,
+  action = false,
+  _id:id
+}) => {
   const ListAllUsers = () => {
     return Users?.map((item) => {
-      const { name = "", email = "", _id=""} = item;
+      const { name = "", email = "", _id = "" } = item;
       const imgUrlString = imgUrl + item?.profilePicture;
-      return (
+      return  (
         <div className="d-flex justify-content-between align-items-center">
           <div className="d-flex justify-content-start align-items-center p-2 gap-2">
             <img
@@ -21,7 +30,17 @@ const ViewGroupPopup = ({ fn, Users = [], chatName = "", groupAdmin }) => {
               <div>{email}</div>
             </div>
           </div>
-          <span className={groupAdmin?._id == _id  ? "text-success" : "text-danger"}>{groupAdmin?._id == _id ? "Admin":"Remove"}</span>
+          <span
+            className={groupAdmin?._id == _id ? "text-success" : "text-danger"}
+            style={{cursor:"pointer"}}
+            onClick={()=>{
+              if(action && groupAdmin?._id != _id){
+                submitfn(id, _id)
+              }
+            }}
+          >
+            {groupAdmin?._id == _id ? "Admin" :  action && "Remove"}
+          </span>
         </div>
       );
     });
@@ -36,7 +55,8 @@ const ViewGroupPopup = ({ fn, Users = [], chatName = "", groupAdmin }) => {
 
       <div
         style={{ maxWidth: "300px", fontSize: "13px" }}
-        className="my-2 w-100">
+        className="my-2 w-100"
+      >
         <ListAllUsers />
       </div>
     </PopupWrapper>

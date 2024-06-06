@@ -153,20 +153,20 @@ const removeFromGroup = asyncHandler(async (req, res) => {
     .findByIdAndUpdate(
       chatId,
       {
-        $pull: { users: userId },
+        $pull: { Users: userId },
       },
       {
         new: true,
       }
     )
-    .populate("users", "-password")
+    .populate("Users", "-password")
     .populate("groupAdmin", "-password");
 
   if (!removed) {
     res.status(404);
     throw new Error("Chat Not Found");
   } else {
-    res.json(removed);
+    res.json({data:removed, status:true});
   }
 });
 

@@ -75,23 +75,22 @@ const ChatHeader = ({
         setAddOpen();
         setAddValue({ ...addValue, chatId: "" });
       }
-    } catch (error) {}
-  };
-<<<<<<< HEAD
-  const removeFromGroup = () =>{
-    
-  }
-=======
+    } catch (error) {
 
-  const removeFromGroup = async () => {
+    }
+  };
+
+  const removeFromGroup = async (chatId, userId) => {
     try{
-      const response = await callAPI(apiUrls.removeFromGroup, {}, "post", addValue);
+      const response = await callAPI(apiUrls.removeFromGroup, {}, "post", {chatId:chatId, userId:userId});
+      if(response.data.status){
+        setRemoveOpen()
+      }
     }catch(error){
 
     }
   }
 
->>>>>>> 934c5ecdf6c67b17676f633925aa38f52d5fd67a
   const chatOptionsText = () => {
     if (isGroupChat) {
       if (groupAdmin?._id == userDetails._id) {
@@ -167,16 +166,16 @@ const ChatHeader = ({
           setGroupfn={setAddValue}
           addValue={addValue}
           submitfn={addToGroup}
+
         />
       )}
       {
         removeOpen && (
           <ViewGroupPopup
-            group={group}
-            fn={setAddOpen}
-            setGroupfn={setAddValue}
-            addValue={addValue}
-            submitfn={addToGroup}
+            {...activeChatDetails}
+            fn={setRemoveOpen}
+            submitfn={removeFromGroup}
+            action={true}
           />
         )
       }
