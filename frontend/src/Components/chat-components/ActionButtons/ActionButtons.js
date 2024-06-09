@@ -2,7 +2,7 @@ import React from "react";
 
 const ActionButtons = ({ submitText = "Submit", submitFn, cancelFn }) => {
   return (
-    <div className="d-flex justify-content-end align-items start gap-2 mt-5">
+    <div className="d-flex justify-content-end align-items start gap-2 mt-3">
       <button
         className="btn btn-secondary"
         onClick={() => {

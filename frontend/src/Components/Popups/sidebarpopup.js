@@ -4,12 +4,13 @@ import { useOnClickOutside } from "../../customHooks";
 import { handleProfileOpen } from "../../Redux/ProfileSlice";
 import { useDispatch } from "react-redux";
 
-const Sidebarpopup = ({ open, clickFn, clickref }) => {
+const Sidebarpopup = ({ open, clickFn, clickref, logoutOpen }) => {
   const dispatch = useDispatch();
-
   useOnClickOutside(clickref, () => {
     clickFn();
   });
+
+
 
   return (
     <ul
@@ -32,7 +33,7 @@ const Sidebarpopup = ({ open, clickFn, clickref }) => {
         </Link>
       </li>
       <li>
-        <Link href="#">
+        <Link onClick={logoutOpen}>
           <i className="fa fa-sign-out" /> Logout
         </Link>
       </li>

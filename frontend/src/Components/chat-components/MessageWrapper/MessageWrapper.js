@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import MessageBox from "../MessageBox/MessageBox";
 import UserDpSm from "../UserDpSm/UserDpSm";
+import WarningPopup from "../../Popups/WarningPopup";
+import { usePopUp } from "../../../customHooks";
 
 const MessageWrapper = ({ messages = [] }) => {
   const [messageList, setMessageList] = useState([]);
@@ -8,10 +10,9 @@ const MessageWrapper = ({ messages = [] }) => {
   let subList = [];
 
   const serializeMessage = () => {
-    if(messages.length == 0){
-      setMessageList([])
-    }
-    else{
+    if (messages.length == 0) {
+      setMessageList([]);
+    } else {
       for (let i = 0; i < messages.length; i++) {
         if (i == 0) {
           subList.push(messages[i]);
@@ -46,19 +47,23 @@ const MessageWrapper = ({ messages = [] }) => {
 export default MessageWrapper;
 
 const MessageContainer = ({ item }) => {
+  const [deletePopup, setDeletePopup] = usePopUp();
 
   const selfStatus =
     item[0]?.sender?._id != JSON.parse(localStorage.getItem("user"))?._id
       ? "me"
       : "";
   return (
-    <li className={`conversation-item ${selfStatus}`}>
-      <UserDpSm {...item[0]?.sender} />
-      <div className="conversation-item-content">
-        {item?.map((message) => {
-          return <MessageBox {...message} selfStatus={selfStatus} />;
-        })}
-      </div>
-    </li>
+    <>
+      <li className={`conversation-item ${selfStatus}`}>
+        <UserDpSm {...item[0]?.sender} />
+        <div className="conversation-item-content">
+          {item?.map((message) => {
+            return <MessageBox {...message} selfStatus={selfStatus} setDeletePopup={setDeletePopup}/>;
+          })}
+        </div>
+      </li>
+      {deletePopup && <WarningPopup action={"Delete"} cancelFn={setDeletePopup}/>}
+    </>
   );
 };
