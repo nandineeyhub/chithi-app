@@ -1,17 +1,11 @@
 import axiosInt from "./axiosUtil";
 
-const callAPI = async (
-  endpoint,
-  params = {},
-  method,
-  data = null,
-
-) => {
+const callAPI = async (endpoint, params = {}, method, data = null) => {
   const token = JSON.parse(localStorage.getItem("user"))?.token;
-  const headers = {
-    Authorization: `Bearer ${token}`,
-    "Content-Type": "application/json", // example header
-  };
+  const headers =  {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json", // example header
+      };
   let response;
   switch (method.toLowerCase()) {
     case "get":
@@ -29,6 +23,19 @@ const callAPI = async (
     default:
       throw new Error(`Unsupported HTTP method: ${method}`);
   }
+  return response?.data;
+};
+
+export const API = async (endpoint, params = {}, method, data = null) => {
+  
+  const token = JSON.parse(localStorage.getItem("user"))?.token;
+  const multiPartHeader = {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "multipart/form-data",
+  };
+
+  const response = await axiosInt.post(endpoint, data, { multiPartHeader, params });
+
   return response?.data;
 };
 

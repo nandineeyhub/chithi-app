@@ -2,7 +2,7 @@ import React from "react";
 import CrossIcon from "../../CrossIcon/CrossIcon";
 import PopupWrapper from "../PopupWrapper/PopupWrapper";
 import { imgUrl, noImg } from "../../../apiConfig";
-import ActionButtons from "../ActionButtons/ActionButtons";
+
 
 const ViewGroupPopup = ({
   fn,

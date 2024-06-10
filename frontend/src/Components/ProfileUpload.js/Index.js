@@ -4,12 +4,12 @@ import ProfileDetails from "./ProfileDetails";
 import ProfileUpdateSubmit from "./ProfileUpdateSubmit";
 import { useDispatch } from "react-redux";
 import { setProfile } from "../../Redux/ProfileSlice";
-import callAPI from "../../apiUtils/apiCall";
+import callAPI, { API } from "../../apiUtils/apiCall";
 import { apiUrls, headers, multiPartHeader } from "../../apiConfig";
 import PopupWrapper from "../chat-components/PopupWrapper/PopupWrapper";
 import CrossIcon from "../CrossIcon/CrossIcon";
 
-const Index = ({ profileDetails, fn, action=false }) => {
+const Index = ({ profileDetails, fn, action = false }) => {
   const [dp, setDp] = useState(
     profileDetails?.profilePicture ? profileDetails?.profilePicture : ""
   );
@@ -19,10 +19,12 @@ const Index = ({ profileDetails, fn, action=false }) => {
 
   const uploadDp = async (e) => {
     setDp(e.target.files[0]);
+    
     const formData = new FormData();
     formData.append("picture", e.target.files[0]);
+    console.log(formData)
     try {
-      const response = await callAPI(
+      const response = await API(
         apiUrls.uploadProfilePicture,
         {},
         "POST",
@@ -33,7 +35,9 @@ const Index = ({ profileDetails, fn, action=false }) => {
         setDetails((value) => {
           return { ...value, profilePicture: response?.data?.fileName };
         });
-        dispatch(setProfile({...details,  profilePicture: response?.data?.fileName}));
+        dispatch(
+          setProfile({ ...details, profilePicture: response?.data?.fileName })
+        );
       }
     } catch (error) {}
   };
@@ -67,14 +71,21 @@ const Index = ({ profileDetails, fn, action=false }) => {
   return (
     <PopupWrapper>
       <div className="d-flex justify-content-end align-items-center ">
-      <CrossIcon fn={() => {
-            fn()
-          }}/>
+        <CrossIcon
+          fn={() => {
+            fn();
+          }}
+        />
       </div>
       <div className="d-flex justify-content-center align-items-center h-50">
-        <ProfileDp dp={dp} uploadDp={uploadDp} {...profileDetails} action={action}/>
+        <ProfileDp
+          dp={dp}
+          uploadDp={uploadDp}
+          {...profileDetails}
+          action={action}
+        />
       </div>
-      <ProfileDetails {...details} editFn={handleChange} action={action}/>
+      <ProfileDetails {...details} editFn={handleChange} action={action} />
       {action && <ProfileUpdateSubmit handleUpdate={handleUpdate} />}
     </PopupWrapper>
   );

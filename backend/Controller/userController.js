@@ -77,6 +77,7 @@ const login = asyncHandler(async (req, res) => {
 });
 
 const uploadProfilePicture = asyncHandler(async (req, res) => {
+  console.log(req.file)
   const imagePath = req.file.filename;
   const userId = req.user;
   const activeUser = await user.findOne({ _id: userId });

@@ -10,8 +10,6 @@ const Sidebarpopup = ({ open, clickFn, clickref, logoutOpen }) => {
     clickFn();
   });
 
-
-
   return (
     <ul
       ref={clickref}
@@ -28,7 +26,7 @@ const Sidebarpopup = ({ open, clickFn, clickref, logoutOpen }) => {
         </Link>
       </li>
       <li>
-        <Link href="#">
+        <Link >
           <i className="fa fa-key" /> Password
         </Link>
       </li>
