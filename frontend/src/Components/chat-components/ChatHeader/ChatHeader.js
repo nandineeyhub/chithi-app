@@ -19,7 +19,7 @@ const ChatHeader = ({
   const [open, setOpen] = usePopUp();
   const [profileOpen, setProfileOpen] = usePopUp();
   const [addOpen, setAddOpen] = usePopUp();
-  const [removeOpen, setRemoveOpen] = usePopUp()
+  const [removeOpen, setRemoveOpen] = usePopUp();
   const [addValue, setAddValue] = useState({
     userId: activeChatDetails?._id,
     chatId: "",
@@ -55,15 +55,16 @@ const ChatHeader = ({
     try {
       const response = await callAPI(apiUrls.fetchChats, {}, "get", null);
       if (response.status) {
-       
-          const data = response.data?.filter((value) => {
-            return value?.isGroupChat == true 
-          })
+        const data = response.data?.filter((value) => {
+          return value?.isGroupChat == true;
+        });
 
-          data.filter((group)=>{
-              return group?.Users?.includes(activeChatDetails?._id) == false
-          })
-       
+        const groups = data.filter((group) => {
+          console.log(group?.Users)
+          return group?.Users?.includes(activeChatDetails?._id) == false;
+        });
+
+        setGroup(groups);
       }
     } catch (error) {}
   };
@@ -75,21 +76,20 @@ const ChatHeader = ({
         setAddOpen();
         setAddValue({ ...addValue, chatId: "" });
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
 
   const removeFromGroup = async (chatId, userId) => {
-    try{
-      const response = await callAPI(apiUrls.removeFromGroup, {}, "post", {chatId:chatId, userId:userId});
-      if(response.data.status){
-        setRemoveOpen()
+    try {
+      const response = await callAPI(apiUrls.removeFromGroup, {}, "post", {
+        chatId: chatId,
+        userId: userId,
+      });
+      if (response.status) {
+        setRemoveOpen();
       }
-    }catch(error){
-
-    }
-  }
+    } catch (error) {}
+  };
 
   const chatOptionsText = () => {
     if (isGroupChat) {
@@ -101,7 +101,7 @@ const ChatHeader = ({
 
   const fn = () => {
     if (isGroupChat) {
-      if(groupAdmin?._id == userDetails._id) return setRemoveOpen
+      if (groupAdmin?._id == userDetails._id) return setRemoveOpen;
     } else {
       return setAddOpen;
     }
@@ -112,6 +112,10 @@ const ChatHeader = ({
       fetchChats();
     }
   }, [addOpen]);
+
+  useEffect(()=>{
+   setAddValue({userId:activeChatDetails?._id})
+  },[activeChatDetails?._id])
 
   return (
     <div className="conversation-top">
@@ -166,19 +170,16 @@ const ChatHeader = ({
           setGroupfn={setAddValue}
           addValue={addValue}
           submitfn={addToGroup}
-
         />
       )}
-      {
-        removeOpen && (
-          <ViewGroupPopup
-            {...activeChatDetails}
-            fn={setRemoveOpen}
-            submitfn={removeFromGroup}
-            action={true}
-          />
-        )
-      }
+      {removeOpen && (
+        <ViewGroupPopup
+          {...activeChatDetails}
+          fn={setRemoveOpen}
+          submitfn={removeFromGroup}
+          action={true}
+        />
+      )}
     </div>
   );
 };

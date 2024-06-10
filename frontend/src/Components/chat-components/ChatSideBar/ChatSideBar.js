@@ -7,6 +7,7 @@ import Index from "../../ProfileUpload.js/Index";
 import { handleProfileOpen, setProfile } from "../../../Redux/ProfileSlice";
 import WarningPopup from "../../Popups/WarningPopup";
 import { useNavigate } from "react-router-dom";
+import { setActiveChat } from "../../../Redux/MessageSlice";
 
 
 
@@ -22,6 +23,8 @@ const ChatSideBar = () => {
 
   const logoutFn = () =>{
     localStorage.clear()
+    dispatch(setProfile({}))
+    dispatch(setActiveChat({}))
     navigate("/")
   }
   
