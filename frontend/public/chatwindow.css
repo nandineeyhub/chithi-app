@@ -493,7 +493,7 @@
     color: var(--slate-400);
     display: block;
     text-align: right;
-    margin-top: 4px;
+    margin-top: 3px;
     line-height: 1;
 }
 .conversation-item.me .conversation-item-time {

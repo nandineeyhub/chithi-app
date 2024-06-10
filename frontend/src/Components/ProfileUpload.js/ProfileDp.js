@@ -1,6 +1,5 @@
 import React, { useRef } from "react";
 import { imgUrl, noImg } from "../../apiConfig";
-import { useSelector } from "react-redux";
 
 const ProfileDp = ({profilePicture="", uploadDp, action = false }) => {
 

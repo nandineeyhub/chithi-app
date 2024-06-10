@@ -85,7 +85,6 @@ const Messages = () => {
       <ChatHeader {...activeChatDetails} />
       <div className="conversation-main">
         <div className="conversation-wrapper">
-          <ChatDayStamp />
           <MessageWrapper {...chatDetails} />
         </div>
       </div>
