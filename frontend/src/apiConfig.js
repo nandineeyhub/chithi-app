@@ -15,6 +15,8 @@ export const apiUrls = {
   accessChat:"chat/accessChat",
   fetchChats:"chat/fetchChats",
   sendMessage:"chat/sendMessage",
+  deleteMessage:"",
+  fowardMessage:"",
   
   createGroupChat:"chat/createGroupChat",
   addToGroup:"chat/addToGroup",

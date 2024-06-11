@@ -60,7 +60,6 @@ const ChatHeader = ({
         });
 
         const groups = data.filter((group) => {
-          console.log(group?.Users)
           return group?.Users?.includes(activeChatDetails?._id) == false;
         });
 
@@ -114,7 +113,7 @@ const ChatHeader = ({
   }, [addOpen]);
 
   useEffect(()=>{
-   setAddValue({userId:activeChatDetails?._id})
+   setAddValue({userId:activeChatDetails})
   },[activeChatDetails?._id])
 
   return (

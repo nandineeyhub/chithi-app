@@ -5,6 +5,8 @@ import WarningPopup from "../../Popups/WarningPopup";
 import { usePopUp } from "../../../customHooks";
 import moment from "moment";
 import ChatDayStamp from "../ChatDayStamp/ChatDayStamp";
+import callAPI from "../../../apiUtils/apiCall";
+import { apiUrls } from "../../../apiConfig";
 
 const MessageWrapper = ({ messages = [], chatDetails }) => {
   const [messageList, setMessageList] = useState([]);
@@ -48,6 +50,20 @@ const MessageWrapper = ({ messages = [], chatDetails }) => {
     }
   };
 
+  const deleteMessage = async (id) => {
+    try {
+      const response = await callAPI(apiUrls.deleteMessage, {}, "delete", {
+        messageId: id,
+      });
+      if(response.status){
+        
+      } else {
+
+      }
+    } catch (error) {}
+  };
+  
+
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
@@ -56,9 +72,9 @@ const MessageWrapper = ({ messages = [], chatDetails }) => {
     serializeMessage();
   }, [messages.length]);
 
-  useEffect(()=>{
-   scrollToBottom()
-  },[messageList])
+  useEffect(() => {
+    scrollToBottom();
+  }, [messageList]);
 
   return (
     <div>
@@ -70,6 +86,7 @@ const MessageWrapper = ({ messages = [], chatDetails }) => {
             isGroupChat={chatDetails?.isGroupChat}
             lastLabel={lastLabel}
             i={i}
+            deleteMessage={deleteMessage}
           />
         );
       })}
@@ -80,8 +97,9 @@ const MessageWrapper = ({ messages = [], chatDetails }) => {
 
 export default MessageWrapper;
 
-const MessageContainer = ({ item, isGroupChat, lastLabel, i }) => {
+const MessageContainer = ({ item, isGroupChat, lastLabel, i, deleteMessage }) => {
   const [deletePopup, setDeletePopup] = usePopUp();
+  const [id, setId] = useState("")
 
   const selfStatus =
     item[0]?.sender?._id != JSON.parse(localStorage.getItem("user"))?._id
@@ -112,13 +130,17 @@ const MessageContainer = ({ item, isGroupChat, lastLabel, i }) => {
                 {...message}
                 selfStatus={selfStatus}
                 setDeletePopup={setDeletePopup}
+                setId={setId}
               />
             );
           })}
         </div>
       </li>
       {deletePopup && (
-        <WarningPopup action={"Delete"} cancelFn={setDeletePopup} />
+        <WarningPopup action={"Delete"} cancelFn={setDeletePopup} submitFn={()=>{
+          deleteMessage(id)
+          setDeletePopup()
+        }}  />
       )}
     </>
   );

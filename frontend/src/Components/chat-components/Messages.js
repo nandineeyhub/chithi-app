@@ -8,6 +8,8 @@ import { setActiveChat } from "../../Redux/MessageSlice";
 import callAPI from "../../apiUtils/apiCall";
 import { apiUrls, headers } from "../../apiConfig";
 import DefaultChatWindow from "./DefaultChatWindow";
+import WarningPopup from "../Popups/WarningPopup";
+import { usePopUp } from "../../customHooks";
 
 const Messages = () => {
 
@@ -67,6 +69,32 @@ const Messages = () => {
 
     } catch (error) {}
   };
+  const deleteMessage = async (id) => {
+    try {
+      const response = await callAPI(apiUrls.deleteMessage, {}, "delete", {
+        messageId: id,
+      });
+      if(response.status){
+        
+      } else {
+
+      }
+    } catch (error) {
+
+    }
+  };
+
+  const forwardMessage = async (messageId, chatId) => {
+    try{
+      const response = await callAPI(apiUrls.fowardMessage, {}, "post", {
+        messageId:messageId,
+        chatId:chatId
+      })
+    } catch(error){
+
+    }
+  }
+
 
   useEffect(() => {
     if (activeChatDetails && Object.keys(activeChatDetails)?.length == 0) {
@@ -93,6 +121,7 @@ const Messages = () => {
         sendMessage={sendMessage}
         content={messageBody.content}
       />
+      
     </div>
   ) : <DefaultChatWindow/>
 };
