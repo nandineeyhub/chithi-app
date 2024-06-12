@@ -20,14 +20,19 @@ const accessChat = asyncHandler(async (req, res) => {
 });
 
 const deleteMessage = asyncHandler(async (req, res) => {
-  const { messageId } = req.body;
+  const { messageId } = req.query
 
-  const message = message.find({ _id: messageId });
-  if (message.length == 0) {
+  if (!messageId) {
+    res.status(400);
+    throw new Error("Message Id not present");
+  }
+  
+  const messages = message.find({ _id: messageId });
+  if (messages.length == 0) {
     res.status(400);
     throw new Error("Message not found");
   } else {
-    const newData = message.findByIdAndUpdate(
+    const newData = await message.findByIdAndUpdate(
       messageId,
       {
         $push: { deletedBy: req.user },
@@ -36,27 +41,31 @@ const deleteMessage = asyncHandler(async (req, res) => {
         new: true,
       }
     );
-
+    console.log(newData);
+    if(newData)
     res.status(200).json({
-      status: true,
       data: newData,
+      status: true,
     });
+    else res.status(400).json({
+      status:false,
+      message:"Something went wrong"
+    })
   }
 });
 
 const forwardMessage = asyncHandler(async (req, res) => {
   const { messageId, chatId } = req.body;
 
-  const message = message.find({ _id: messageId });
+  const message = await message.find({ _id: messageId });
 
   if (message.length > 0) {
     var newMessage = {
       sender: req.user._id,
       content: content,
       chat: chatId,
-      forward:true
+      forward: true,
     };
-
   } else {
     res.status(400);
     throw new Error("Message not found");
@@ -166,7 +175,7 @@ const removeFromGroup = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Chat Not Found");
   } else {
-    res.json({data:removed, status:true});
+    res.json({ data: removed, status: true });
   }
 });
 
@@ -191,7 +200,7 @@ const addToGroup = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("Chat Not Found");
   } else {
-    res.json({data:added, status:true});
+    res.json({ data: added, status: true });
   }
 });
 
@@ -203,5 +212,5 @@ module.exports = {
   removeFromGroup,
   addToGroup,
   deleteMessage,
-  forwardMessage
+  forwardMessage,
 };

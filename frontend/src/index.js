@@ -7,6 +7,7 @@ import Auth from './Components/Auth';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import AuthRequired from './Guard';
 import ChatWindow from './Components/chat-components/MainLayout/chatWindow';
+import GuestUser from './GuestUser';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -15,7 +16,7 @@ const router = createBrowserRouter([{
   element:<App/>,
   children:[{
     path:"/",
-    element:<Auth/>
+    element:<GuestUser><Auth/></GuestUser>
   },{
     path:"/messages",
     element:<AuthRequired><ChatWindow/></AuthRequired>

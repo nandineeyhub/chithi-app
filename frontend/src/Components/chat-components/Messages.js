@@ -69,20 +69,7 @@ const Messages = () => {
 
     } catch (error) {}
   };
-  const deleteMessage = async (id) => {
-    try {
-      const response = await callAPI(apiUrls.deleteMessage, {}, "delete", {
-        messageId: id,
-      });
-      if(response.status){
-        
-      } else {
 
-      }
-    } catch (error) {
-
-    }
-  };
 
   const forwardMessage = async (messageId, chatId) => {
     try{
@@ -113,7 +100,7 @@ const Messages = () => {
       <ChatHeader {...activeChatDetails} />
       <div className="conversation-main">
         <div className="conversation-wrapper">
-          <MessageWrapper {...chatDetails} />
+          <MessageWrapper {...chatDetails} setChatDetails={setChatDetails} />
         </div>
       </div>
       <MessageTypeBar

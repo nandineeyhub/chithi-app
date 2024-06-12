@@ -8,7 +8,7 @@ import ChatDayStamp from "../ChatDayStamp/ChatDayStamp";
 import callAPI from "../../../apiUtils/apiCall";
 import { apiUrls } from "../../../apiConfig";
 
-const MessageWrapper = ({ messages = [], chatDetails }) => {
+const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
   const [messageList, setMessageList] = useState([]);
   let messageListTemp = [];
   let subList = [];
@@ -56,7 +56,8 @@ const MessageWrapper = ({ messages = [], chatDetails }) => {
         messageId: id,
       });
       if(response.status){
-        
+        const newMessages = messages.filter((msg) =>  {return msg._id != id} )
+        setChatDetails((value) => {return {...value, messages: newMessages}})
       } else {
 
       }

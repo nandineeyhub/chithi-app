@@ -18,7 +18,7 @@ const callAPI = async (endpoint, params = {}, method, data = null) => {
       response = await axiosInt.put(endpoint, data, { headers });
       break;
     case "delete":
-      response = await axiosInt.delete(endpoint, { headers });
+      response = await axiosInt.delete(endpoint, { headers, params });
       break;
     default:
       throw new Error(`Unsupported HTTP method: ${method}`);

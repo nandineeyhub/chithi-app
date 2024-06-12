@@ -122,6 +122,7 @@ const ContentSidebar = () => {
         ) : (
           <UserCard
             {...item}
+            profilePicture={imgUrl + item?.profilePicture}
             latestMessage={"Tap to send a message."}
             clickFn={() => {
               openChat(item);

@@ -2,7 +2,7 @@ import moment from "moment";
 import React from "react";
 
 const MessageBox = ({
-  _id="",
+  _id = "",
   content = "",
   createdAt = "",
   selfStatus,
@@ -12,6 +12,7 @@ const MessageBox = ({
   isGroupChat,
   setId,
 }) => {
+  
   const friendStatus =
     selfStatus == ""
       ? "conversation-item-text"
@@ -21,7 +22,11 @@ const MessageBox = ({
   return (
     <div className="conversation-item-wrapper d-flex justify-content-center align-items-center gap-2">
       {selfStatus == "" && (
-        <TrashOptions setDeletePopup={setDeletePopup} clickFn={setId} id={_id}/>
+        <TrashOptions
+          setDeletePopup={setDeletePopup}
+          clickFn={setId}
+          id={_id}
+        />
       )}
       <div className="conversation-item-box">
         <div className={friendStatus}>
@@ -40,7 +45,11 @@ const MessageBox = ({
         </div>
       </div>
       {selfStatus != "" && (
-        <TrashOptions setDeletePopup={setDeletePopup} clickFn={setId} id={_id}/>
+        <TrashOptions
+          setDeletePopup={setDeletePopup}
+          clickFn={setId}
+          id={_id}
+        />
       )}
     </div>
   );
@@ -48,14 +57,14 @@ const MessageBox = ({
 
 export default MessageBox;
 
-const TrashOptions = ({ setDeletePopup, clickFn, id="" }) => {
+const TrashOptions = ({ setDeletePopup, clickFn, id = "" }) => {
   return (
     <div className="d-flex justify-content-center align-items-center gap-1 trash">
       <i
         className="fa fa-trash"
         onClick={() => {
           setDeletePopup();
-          clickFn(id)
+          clickFn(id);
         }}
       ></i>
       <i className="fa fa-share"></i>

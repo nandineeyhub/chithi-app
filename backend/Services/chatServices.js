@@ -24,7 +24,7 @@ chatService.privateChatAcces = asyncHandler(async (req) => {
       .find({
         chat: isChat[0]?._id,
       })
-      .select("-_id -__v -updatedAt -chat")
+      .select(" -__v -updatedAt -chat")
       .populate("sender", "-password  -email -__v -updatedAt");
     return {
       status: true,
@@ -66,7 +66,7 @@ chatService.groupChatAccess = async (req) => {
       .find({
         chat: chatDetails[0]._id,
       })
-      .select("-_id -__v -updatedAt -chat")
+      .select("-__v -updatedAt -chat")
       .populate("sender", "-password  -email -__v -updatedAt");
 
     return { status:true, data:{ messages: messageList, chatDetails:chatDetails[0] }};
