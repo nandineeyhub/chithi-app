@@ -1,6 +1,5 @@
 import React from 'react'
 import PopupWrapper from '../chat-components/PopupWrapper/PopupWrapper'
-import CrossIcon from '../CrossIcon/CrossIcon'
 import ActionButtons from '../chat-components/ActionButtons/ActionButtons'
 
 const WarningPopup = ({action="", submitFn, cancelFn}) => {

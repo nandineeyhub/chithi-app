@@ -23,6 +23,7 @@ chatService.privateChatAcces = asyncHandler(async (req) => {
     const messageList = await message
       .find({
         chat: isChat[0]?._id,
+        $and: [{ deletedBy: { $elemMatch: { $ne: userId } } }],
       })
       .select(" -__v -updatedAt -chat")
       .populate("sender", "-password  -email -__v -updatedAt");
@@ -65,11 +66,15 @@ chatService.groupChatAccess = async (req) => {
     const messageList = await message
       .find({
         chat: chatDetails[0]._id,
+        deletedBy:  { $nin: req.user._id } ,
       })
       .select("-__v -updatedAt -chat")
       .populate("sender", "-password  -email -__v -updatedAt");
 
-    return { status:true, data:{ messages: messageList, chatDetails:chatDetails[0] }};
+    return {
+      status: true,
+      data: { messages: messageList, chatDetails: chatDetails[0] },
+    };
   }
 };
 

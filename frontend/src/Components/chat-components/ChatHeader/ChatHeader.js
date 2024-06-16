@@ -68,7 +68,9 @@ const ChatHeader = ({
 
         setGroup(groups);
       }
-    } catch (error) {}
+    } catch (error) {
+      
+    }
   };
 
   const addToGroup = async () => {

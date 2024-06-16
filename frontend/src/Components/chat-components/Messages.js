@@ -70,19 +70,6 @@ const Messages = () => {
     } catch (error) {}
   };
 
-
-  const forwardMessage = async (messageId, chatId) => {
-    try{
-      const response = await callAPI(apiUrls.fowardMessage, {}, "post", {
-        messageId:messageId,
-        chatId:chatId
-      })
-    } catch(error){
-
-    }
-  }
-
-
   useEffect(() => {
     if (activeChatDetails && Object.keys(activeChatDetails)?.length == 0) {
       dispatch(setActiveChat(JSON.parse(localStorage.getItem("activeChat"))));

@@ -57,15 +57,34 @@ const deleteMessage = asyncHandler(async (req, res) => {
 const forwardMessage = asyncHandler(async (req, res) => {
   const { messageId, chatId } = req.body;
 
-  const message = await message.find({ _id: messageId });
+  const messageExist = await message.find({ _id: messageId });
 
-  if (message.length > 0) {
+  if (messageExist.length > 0) {
     var newMessage = {
       sender: req.user._id,
       content: content,
       chat: chatId,
       forward: true,
     };
+     var forwardedmessage = await message.create(newMessage);
+     forwardedmessage = await forwardedmessage.populate("sender", "name profilePicture");
+     forwardedmessage = await forwardedmessage.populate("chat");
+     forwardedmessage = await user.populate(forwardedmessage, {
+      path: "chat.Users",
+      select: "name profilePicture email",
+    });
+
+    await chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
+    if(forwardedmessage){
+      res.json({
+        status:true,
+        data:{
+          message:forwardedmessage
+        },
+         message:"Message forwarded Successfully"
+      })
+       
+    }
   } else {
     res.status(400);
     throw new Error("Message not found");

@@ -7,13 +7,15 @@ import moment from "moment";
 import ChatDayStamp from "../ChatDayStamp/ChatDayStamp";
 import callAPI from "../../../apiUtils/apiCall";
 import { apiUrls } from "../../../apiConfig";
+import ForwardPopup from "../../Popups/forwardPopup";
 
 const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
   const [messageList, setMessageList] = useState([]);
+  const [chatList, setChatList] = useState([])
   let messageListTemp = [];
   let subList = [];
   const chatEndRef = useRef(null);
-
+  
   const serializeMessage = () => {
     if (messages.length == 0) {
       setMessageList([]);
@@ -50,9 +52,31 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
     }
   };
 
+  const fetchChats = async () => {
+    try {
+      const response = await callAPI(apiUrls.fetchChats, {}, "get", null);
+      if (response.status) {
+        setChatList(response.data)
+      }
+    } catch (error) {
+      
+    }
+  };
+
+  const forwardMessage = async (messageId, chatId) => {
+    try{
+      const response = await callAPI(apiUrls.fowardMessage, {}, "post", {
+        messageId:messageId,
+        chatId:chatId
+      })
+    } catch(error){
+
+    }
+  }
+
   const deleteMessage = async (id) => {
     try {
-      const response = await callAPI(apiUrls.deleteMessage, {}, "delete", {
+      const response = await callAPI(apiUrls.deleteMessage, {messageId: id}, "delete", {
         messageId: id,
       });
       if(response.status){
@@ -61,7 +85,9 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
       } else {
 
       }
-    } catch (error) {}
+    } catch (error) {
+
+    }
   };
   
 
@@ -84,9 +110,11 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
         return (
           <MessageContainer
             item={item}
-            isGroupChat={chatDetails?.isGroupChat}
+            isGroupChat={chatDetails?.isGroupChat} 
+            chats={chatList}
             lastLabel={lastLabel}
             i={i}
+            fetchChats={fetchChats}
             deleteMessage={deleteMessage}
           />
         );
@@ -98,8 +126,9 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
 
 export default MessageWrapper;
 
-const MessageContainer = ({ item, isGroupChat, lastLabel, i, deleteMessage }) => {
+const MessageContainer = ({ item, isGroupChat, lastLabel, i, deleteMessage, chats, fetchChats }) => {
   const [deletePopup, setDeletePopup] = usePopUp();
+  const [forwardPopup, setForwardPopup] = usePopUp()
   const [id, setId] = useState("")
 
   const selfStatus =
@@ -132,6 +161,8 @@ const MessageContainer = ({ item, isGroupChat, lastLabel, i, deleteMessage }) =>
                 selfStatus={selfStatus}
                 setDeletePopup={setDeletePopup}
                 setId={setId}
+                setForwardPopup={setForwardPopup}
+                fetchChats={fetchChats}
               />
             );
           })}
@@ -143,6 +174,11 @@ const MessageContainer = ({ item, isGroupChat, lastLabel, i, deleteMessage }) =>
           setDeletePopup()
         }}  />
       )}
+      {
+        forwardPopup && (
+          <ForwardPopup chats={chats} />
+        )
+      }
     </>
   );
 };

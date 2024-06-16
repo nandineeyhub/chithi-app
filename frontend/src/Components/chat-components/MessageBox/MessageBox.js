@@ -8,9 +8,11 @@ const MessageBox = ({
   selfStatus,
   sender,
   setDeletePopup,
+  setForwardPopup,
   index,
   isGroupChat,
   setId,
+  fetchChats
 }) => {
   
   const friendStatus =
@@ -47,7 +49,9 @@ const MessageBox = ({
       {selfStatus != "" && (
         <TrashOptions
           setDeletePopup={setDeletePopup}
+          setForwardPopup={setForwardPopup}
           clickFn={setId}
+          fetchChats={fetchChats}
           id={_id}
         />
       )}
@@ -57,7 +61,7 @@ const MessageBox = ({
 
 export default MessageBox;
 
-const TrashOptions = ({ setDeletePopup, clickFn, id = "" }) => {
+const TrashOptions = ({ setDeletePopup, clickFn, id = "", setForwardPopup, fetchChats }) => {
   return (
     <div className="d-flex justify-content-center align-items-center gap-1 trash">
       <i
@@ -67,7 +71,10 @@ const TrashOptions = ({ setDeletePopup, clickFn, id = "" }) => {
           clickFn(id);
         }}
       ></i>
-      <i className="fa fa-share"></i>
+      <i className="fa fa-share" onClick={()=>{
+        setForwardPopup()
+        fetchChats()
+      }}></i>
     </div>
   );
 };
