@@ -23,7 +23,7 @@ chatService.privateChatAcces = asyncHandler(async (req) => {
     const messageList = await message
       .find({
         chat: isChat[0]?._id,
-        $and: [{ deletedBy: { $elemMatch: { $ne: userId } } }],
+        deletedBy:  { $nin: req.user._id } ,
       })
       .select(" -__v -updatedAt -chat")
       .populate("sender", "-password  -email -__v -updatedAt");

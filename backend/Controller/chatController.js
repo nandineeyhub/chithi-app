@@ -20,13 +20,13 @@ const accessChat = asyncHandler(async (req, res) => {
 });
 
 const deleteMessage = asyncHandler(async (req, res) => {
-  const { messageId } = req.query
+  const { messageId } = req.query;
 
   if (!messageId) {
     res.status(400);
     throw new Error("Message Id not present");
   }
-  
+
   const messages = message.find({ _id: messageId });
   if (messages.length == 0) {
     res.status(400);
@@ -42,48 +42,55 @@ const deleteMessage = asyncHandler(async (req, res) => {
       }
     );
     console.log(newData);
-    if(newData)
-    res.status(200).json({
-      data: newData,
-      status: true,
-    });
-    else res.status(400).json({
-      status:false,
-      message:"Something went wrong"
-    })
+    if (newData)
+      res.status(200).json({
+        data: newData,
+        status: true,
+      });
+    else
+      res.status(400).json({
+        status: false,
+        message: "Something went wrong",
+      });
   }
 });
 
 const forwardMessage = asyncHandler(async (req, res) => {
-  const { messageId, chatId } = req.body;
+  const { messageId, recipientIds } = req.body;
 
   const messageExist = await message.find({ _id: messageId });
 
   if (messageExist.length > 0) {
-    var newMessage = {
-      sender: req.user._id,
-      content: content,
-      chat: chatId,
-      forward: true,
-    };
-     var forwardedmessage = await message.create(newMessage);
-     forwardedmessage = await forwardedmessage.populate("sender", "name profilePicture");
-     forwardedmessage = await forwardedmessage.populate("chat");
-     forwardedmessage = await user.populate(forwardedmessage, {
-      path: "chat.Users",
-      select: "name profilePicture email",
-    });
+    const forwardedMessages = [];
+    for (const recipientId of recipientIds) {
+      var newMessage = {
+        sender: req.user._id,
+        content: messageExist[0]?.content,
+        chat: recipientId,
+        forward: true,
+      };
 
-    await chat.findByIdAndUpdate(req.body.chatId, { latestMessage: message });
-    if(forwardedmessage){
+      var forwardedmessage = await message.create(newMessage);
+      forwardedmessage = await forwardedmessage.populate(
+        "sender",
+        "name profilePicture"
+      );
+      forwardedmessage = await forwardedmessage.populate("chat");
+      forwardedmessage = await user.populate(forwardedmessage, {
+        path: "chat.Users",
+        select: "name profilePicture email",
+      });
+      forwardedMessages.push(forwardedmessage);
+      await chat.findByIdAndUpdate(recipientId, { latestMessage: forwardedmessage });
+    }
+    if (forwardedMessages.length > 0) {
       res.json({
-        status:true,
-        data:{
-          message:forwardedmessage
+        status: true,
+        data: {
+          message: forwardedMessages,
         },
-         message:"Message forwarded Successfully"
-      })
-       
+        message: "Message forwarded Successfully",
+      });
     }
   } else {
     res.status(400);

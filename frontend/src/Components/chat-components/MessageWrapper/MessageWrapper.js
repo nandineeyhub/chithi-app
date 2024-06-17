@@ -11,11 +11,11 @@ import ForwardPopup from "../../Popups/forwardPopup";
 
 const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
   const [messageList, setMessageList] = useState([]);
-  const [chatList, setChatList] = useState([])
+  const [chatList, setChatList] = useState([]);
   let messageListTemp = [];
   let subList = [];
   const chatEndRef = useRef(null);
-  
+
   const serializeMessage = () => {
     if (messages.length == 0) {
       setMessageList([]);
@@ -51,45 +51,43 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
       }
     }
   };
-
+  console.log(chatDetails?._id);
   const fetchChats = async () => {
     try {
       const response = await callAPI(apiUrls.fetchChats, {}, "get", null);
       if (response.status) {
-        setChatList(response.data)
+        setChatList(
+          response.data?.filter((chat) => {
+            return chat?._id != chatDetails?._id;
+          })
+        );
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
-  const forwardMessage = async (messageId, chatId) => {
-    try{
-      const response = await callAPI(apiUrls.fowardMessage, {}, "post", {
-        messageId:messageId,
-        chatId:chatId
-      })
-    } catch(error){
 
-    }
-  }
 
   const deleteMessage = async (id) => {
     try {
-      const response = await callAPI(apiUrls.deleteMessage, {messageId: id}, "delete", {
-        messageId: id,
-      });
-      if(response.status){
-        const newMessages = messages.filter((msg) =>  {return msg._id != id} )
-        setChatDetails((value) => {return {...value, messages: newMessages}})
+      const response = await callAPI(
+        apiUrls.deleteMessage,
+        { messageId: id },
+        "delete",
+        {
+          messageId: id,
+        }
+      );
+      if (response.status) {
+        const newMessages = messages.filter((msg) => {
+          return msg._id != id;
+        });
+        setChatDetails((value) => {
+          return { ...value, messages: newMessages };
+        });
       } else {
-
       }
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
-  
 
   const scrollToBottom = () => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -110,7 +108,7 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
         return (
           <MessageContainer
             item={item}
-            isGroupChat={chatDetails?.isGroupChat} 
+            isGroupChat={chatDetails?.isGroupChat}
             chats={chatList}
             lastLabel={lastLabel}
             i={i}
@@ -126,10 +124,43 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
 
 export default MessageWrapper;
 
-const MessageContainer = ({ item, isGroupChat, lastLabel, i, deleteMessage, chats, fetchChats }) => {
+const MessageContainer = ({
+  item,
+  isGroupChat,
+  lastLabel,
+  i,
+  deleteMessage,
+  chats,
+  fetchChats,
+}) => {
   const [deletePopup, setDeletePopup] = usePopUp();
-  const [forwardPopup, setForwardPopup] = usePopUp()
-  const [id, setId] = useState("")
+  const [forwardPopup, setForwardPopup] = usePopUp();
+  const [id, setId] = useState("");
+  const [forwardingData, setForwardingData] = useState({
+    messageId: "",
+    recipientIds: [],
+  });
+  
+  const forwardMessage = async (data) => {
+    try {
+      const response = await callAPI(apiUrls.fowardMessage, {}, "post", data);
+      if(response.status){
+        setForwardPopup()
+        setForwardingData({
+          messageId: "",
+          recipientIds: [],
+        })
+      }
+    } catch (error) {}
+  };
+
+  const forwardPopUpAction = (id) => {
+    setForwardingData((value) => {
+      return { ...value, messageId: id };
+    });
+    setForwardPopup();
+    fetchChats();
+  }
 
   const selfStatus =
     item[0]?.sender?._id != JSON.parse(localStorage.getItem("user"))?._id
@@ -163,22 +194,40 @@ const MessageContainer = ({ item, isGroupChat, lastLabel, i, deleteMessage, chat
                 setId={setId}
                 setForwardPopup={setForwardPopup}
                 fetchChats={fetchChats}
+                forwardPopUpAction = {forwardPopUpAction}
               />
             );
           })}
         </div>
       </li>
       {deletePopup && (
-        <WarningPopup action={"Delete"} cancelFn={setDeletePopup} submitFn={()=>{
-          deleteMessage(id)
-          setDeletePopup()
-        }}  />
+        <WarningPopup
+          action={"Delete"}
+          cancelFn={setDeletePopup}
+          submitFn={() => {
+            deleteMessage(id);
+            setDeletePopup();
+          }}
+        />
       )}
-      {
-        forwardPopup && (
-          <ForwardPopup chats={chats} />
-        )
-      }
+      {forwardPopup && (
+        <ForwardPopup
+          chats={chats}
+          setForwardPopup={setForwardPopup}
+          setForwardingData={setForwardingData}
+          forwardingData={forwardingData}
+          submitfn={() => {
+            forwardMessage(forwardingData);
+          }}
+          cancelFn={() => {
+            setForwardPopup();
+            setForwardingData({
+              messageId: "",
+              recipientIds: [],
+            });
+          }}
+        />
+      )}
     </>
   );
 };

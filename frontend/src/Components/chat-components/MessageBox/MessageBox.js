@@ -8,13 +8,12 @@ const MessageBox = ({
   selfStatus,
   sender,
   setDeletePopup,
-  setForwardPopup,
   index,
   isGroupChat,
   setId,
-  fetchChats
+  fetchChats,
+  forwardPopUpAction,
 }) => {
-  
   const friendStatus =
     selfStatus == ""
       ? "conversation-item-text"
@@ -28,6 +27,7 @@ const MessageBox = ({
           setDeletePopup={setDeletePopup}
           clickFn={setId}
           id={_id}
+          forwardPopUpAction={forwardPopUpAction}
         />
       )}
       <div className="conversation-item-box">
@@ -49,9 +49,9 @@ const MessageBox = ({
       {selfStatus != "" && (
         <TrashOptions
           setDeletePopup={setDeletePopup}
-          setForwardPopup={setForwardPopup}
           clickFn={setId}
           fetchChats={fetchChats}
+          forwardPopUpAction={forwardPopUpAction}
           id={_id}
         />
       )}
@@ -61,7 +61,12 @@ const MessageBox = ({
 
 export default MessageBox;
 
-const TrashOptions = ({ setDeletePopup, clickFn, id = "", setForwardPopup, fetchChats }) => {
+const TrashOptions = ({
+  setDeletePopup,
+  clickFn,
+  id = "",
+  forwardPopUpAction
+}) => {
   return (
     <div className="d-flex justify-content-center align-items-center gap-1 trash">
       <i
@@ -71,10 +76,12 @@ const TrashOptions = ({ setDeletePopup, clickFn, id = "", setForwardPopup, fetch
           clickFn(id);
         }}
       ></i>
-      <i className="fa fa-share" onClick={()=>{
-        setForwardPopup()
-        fetchChats()
-      }}></i>
+      <i
+        className="fa fa-share"
+        onClick={() => {
+          if(forwardPopUpAction) forwardPopUpAction(id)
+        }}
+      ></i>
     </div>
   );
 };
