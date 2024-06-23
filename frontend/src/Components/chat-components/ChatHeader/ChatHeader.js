@@ -14,6 +14,7 @@ const ChatHeader = ({
   isGroupChat = false,
   groupAdmin,
   Users = [],
+  setShowChat,
 }) => {
   const activeChatDetails = useSelector((store) => store.messages.activeChat);
   const [open, setOpen] = usePopUp();
@@ -68,9 +69,7 @@ const ChatHeader = ({
 
         setGroup(groups);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
   const addToGroup = async () => {
@@ -123,10 +122,10 @@ const ChatHeader = ({
 
   return (
     <div className="conversation-top">
-      <button type="button" className="conversation-back active">
-        <i className="fa fa-arrow-left" />
-      </button>
+    
+
       <div className="conversation-user">
+      <i className="fa fa-arrow-left conversation-back" onClick={() => setShowChat()} />
         <img
           className="conversation-user-image"
           src={profilePicUrl}
@@ -140,13 +139,7 @@ const ChatHeader = ({
         </div>
       </div>
       <div className="conversation-buttons">
-        {/* <button type="button">
-          <i className="fa fa-phone" />
-        </button>
-        <button type="button">
-          <i className="fa fa-video-camera" />
-        </button> */}
-        <div type="button" style={{ marginTop: "auto", position: "relative" }}>
+        <div type="button" style={{ position: "relative" }}>
           <i className="fa fa-ellipsis-v" onClick={setOpen} />
           <div className="group-add-popup">
             {open && (

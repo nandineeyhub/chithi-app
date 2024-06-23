@@ -9,10 +9,10 @@ const UserCard = ({
 }) => {
   return (
     <li style={{ cursor: "pointer" }} onClick={clickFn}>
-      <a>
+      <div className="content-messages-container">
         <img
           className="content-message-image"
-          src={profilePicture == "" ? noImg : profilePicture}
+          src={profilePicture === "" ? noImg : profilePicture}
           alt=""
         />
         <span className="content-message-info">
@@ -23,7 +23,7 @@ const UserCard = ({
           {/* <span className="content-message-unread">5</span> */}
           {/* <span className="content-message-time">12:30</span> */}
         </span>
-      </a>
+      </div>
     </li>
   );
 };

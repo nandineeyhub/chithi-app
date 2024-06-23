@@ -50,7 +50,7 @@ form .input-box input{
 }
 .input-box input:focus,
 .input-box input:valid{
-  border-color:  #026913;
+  border-color:  #5b029b;
 }
 form .policy{
   display: flex;
@@ -66,11 +66,11 @@ form h3{
   color: #fff;
   /* letter-spacing: 1px; */
   border: none;
-  background:  #026913;
+  background:  #5b029b;
   cursor: pointer;
 }
 .input-box.button input:hover{
-  background: #026913;
+  background: #5b029b;
 }
 form .text h3{
  color: #333;
@@ -78,7 +78,7 @@ form .text h3{
  text-align: center;
 }
 form .text h3 a{
-  color: #026913;
+  color: #5b029b;
   text-decoration: none;
 }
 form .text h3 a:hover{
@@ -129,7 +129,7 @@ form .text h3 a:hover{
   height:30px;
   width: 30px;
   border-radius: 50%;
-  background-color:#026913
+  background-color:#5b029b
 }
 .pencil-size{
   color: white;
@@ -157,7 +157,7 @@ form .text h3 a:hover{
     border-radius: 6px;
 }
 .profile input:focus{
-  border-color:  #026913;
+  border-color:  #5b029b;
 }
 
 .user_img{

@@ -18,10 +18,9 @@ const MessageBox = ({
     selfStatus == ""
       ? "conversation-item-text"
       : "conversation-item-text-friend";
-  const color = selfStatus == "" ? "blue" : "pink";
 
   return (
-    <div className="conversation-item-wrapper d-flex justify-content-center align-items-center gap-2">
+    <div className="conversation-item-wrapper d-flex justify-content-start align-items-center gap-2">
       {selfStatus == "" && (
         <TrashOptions
           setDeletePopup={setDeletePopup}
@@ -31,15 +30,10 @@ const MessageBox = ({
         />
       )}
       <div className="conversation-item-box">
+        {isGroupChat && index == 0 && (
+          <span className="name">{sender?.name}</span>
+        )}
         <div className={friendStatus}>
-          {isGroupChat && index == 0 && (
-            <span
-              className="fw-bold"
-              style={{ fontSize: "12px", color: color }}
-            >
-              {sender?.name}
-            </span>
-          )}
           <div>{content}</div>
           <div className="conversation-item-time">
             {moment(createdAt).format("HH:mm")}
@@ -65,7 +59,7 @@ const TrashOptions = ({
   setDeletePopup,
   clickFn,
   id = "",
-  forwardPopUpAction
+  forwardPopUpAction,
 }) => {
   return (
     <div className="d-flex justify-content-center align-items-center gap-1 trash">
@@ -79,7 +73,7 @@ const TrashOptions = ({
       <i
         className="fa fa-share"
         onClick={() => {
-          if(forwardPopUpAction) forwardPopUpAction(id)
+          if (forwardPopUpAction) forwardPopUpAction(id);
         }}
       ></i>
     </div>

@@ -12,7 +12,7 @@ const ActionButtons = ({ submitText = "Submit", submitFn, cancelFn }) => {
         Cancel
       </button>
       <button
-        className="btn btn-success"
+        className=" submitBtn"
         onClick={() => {
           if (submitFn) submitFn();
         }}

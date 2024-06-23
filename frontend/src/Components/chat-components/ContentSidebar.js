@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CreateGroupPopup from "./CreateGroupPopup/CreateGroupPopup";
 import useHandlePopup from "../../helpers/useHandlePopup";
 
-const ContentSidebar = () => {
+const ContentSidebar = ({ setShowChat, showChat }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [friendSuggestions, setFriendSuggestions] = useState([]);
   const [loader, setLoader] = useState(false);
@@ -110,6 +110,7 @@ const ContentSidebar = () => {
             }
             latestMessage={item?.latestMessage?.content}
             clickFn={() => {
+              setShowChat();
               isGroupChat
                 ? openChat({
                     ...item,
@@ -152,8 +153,8 @@ const ContentSidebar = () => {
   }, []);
 
   return (
-    <div className="content-sidebar active">
-      <div className="d-flex justify-content-between align-items-center content-sidebar-title">
+    <div className={`content-sidebar ${showChat && "hide"}`}>
+      <div className="content-sidebar-title py-3 px-3">
         <div className="">Chats</div>
         <div style={{ marginTop: "auto", position: "relative" }}>
           <i
@@ -177,9 +178,6 @@ const ContentSidebar = () => {
       <SearchBar handleSearch={handleSearch} searchQuery={searchQuery} />
       <div className="content-messages">
         <ul className="content-messages-list">
-          <li className="content-message-title">
-            {/* <span>Recently</span> */}
-          </li>
           <ListAllUsers />
         </ul>
       </div>

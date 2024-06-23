@@ -65,8 +65,6 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
     } catch (error) {}
   };
 
-
-
   const deleteMessage = async (id) => {
     try {
       const response = await callAPI(
@@ -140,16 +138,16 @@ const MessageContainer = ({
     messageId: "",
     recipientIds: [],
   });
-  
+
   const forwardMessage = async (data) => {
     try {
       const response = await callAPI(apiUrls.fowardMessage, {}, "post", data);
-      if(response.status){
-        setForwardPopup()
+      if (response.status) {
+        setForwardPopup();
         setForwardingData({
           messageId: "",
           recipientIds: [],
-        })
+        });
       }
     } catch (error) {}
   };
@@ -160,7 +158,7 @@ const MessageContainer = ({
     });
     setForwardPopup();
     fetchChats();
-  }
+  };
 
   const selfStatus =
     item[0]?.sender?._id != JSON.parse(localStorage.getItem("user"))?._id
@@ -180,7 +178,7 @@ const MessageContainer = ({
   return (
     <>
       {getLabel() && <ChatDayStamp dateString={item[0].createdAt} />}
-      <li className={`conversation-item ${selfStatus}`}>
+      <div className={`conversation-item ${selfStatus}`}>
         <UserDpSm {...item[0]?.sender} />
         <div className="conversation-item-content">
           {item?.map((message, index) => {
@@ -194,12 +192,12 @@ const MessageContainer = ({
                 setId={setId}
                 setForwardPopup={setForwardPopup}
                 fetchChats={fetchChats}
-                forwardPopUpAction = {forwardPopUpAction}
+                forwardPopUpAction={forwardPopUpAction}
               />
             );
           })}
         </div>
-      </li>
+      </div>
       {deletePopup && (
         <WarningPopup
           action={"Delete"}

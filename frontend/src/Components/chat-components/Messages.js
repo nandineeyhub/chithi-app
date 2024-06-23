@@ -11,12 +11,11 @@ import DefaultChatWindow from "./DefaultChatWindow";
 import WarningPopup from "../Popups/WarningPopup";
 import { usePopUp } from "../../customHooks";
 
-const Messages = () => {
-
+const Messages = ({ showChat, setShowChat }) => {
   const [chatDetails, setChatDetails] = useState({});
   const [messageBody, setMessageBody] = useState({ chatId: "", content: "" });
   const activeChatDetails = useSelector((store) => store.messages.activeChat);
-  
+
   const dispatch = useDispatch();
 
   const handleMessage = (e) => {
@@ -39,7 +38,7 @@ const Messages = () => {
         apiUrls.accessChat,
         {},
         "post",
-        { userId: id, isGroupChat:isGroupChat },
+        { userId: id, isGroupChat: isGroupChat },
         headers
       );
       if (response.status) {
@@ -66,7 +65,6 @@ const Messages = () => {
         });
         appendNewMessage(response?.data?.message);
       }
-
     } catch (error) {}
   };
 
@@ -83,8 +81,8 @@ const Messages = () => {
   }, [activeChatDetails?._id]);
 
   return activeChatDetails ? (
-    <div className="conversation active">
-      <ChatHeader {...activeChatDetails} />
+    <div className={`conversation ${showChat === false && "hide"}`}>
+      <ChatHeader {...activeChatDetails} setShowChat={setShowChat} />
       <div className="conversation-main">
         <div className="conversation-wrapper">
           <MessageWrapper {...chatDetails} setChatDetails={setChatDetails} />
@@ -95,9 +93,10 @@ const Messages = () => {
         sendMessage={sendMessage}
         content={messageBody.content}
       />
-      
     </div>
-  ) : <DefaultChatWindow/>
+  ) : (
+    <DefaultChatWindow />
+  );
 };
 
 export default Messages;

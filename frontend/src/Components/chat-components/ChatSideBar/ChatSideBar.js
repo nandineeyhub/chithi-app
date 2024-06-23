@@ -43,7 +43,7 @@ const ChatSideBar = () => {
         <li className="chat-sidebar-profile">
           <MidProfilePic clickFn={setOpen} clickref={clickref} img={profileDetails?.profilePicture}/>
           {open && <Sidebarpopup open={open} clickFn={setOpen} clickref={clickref} logoutOpen={setLogoutPopup}/>}
-        </li>
+        </li> 
       </ul>
       { profileOpen && <Index profileDetails={profileDetails} action={true} fn={()=>{
         dispatch(handleProfileOpen());
