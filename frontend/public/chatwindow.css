@@ -10,6 +10,10 @@
 .submitBtn{
     background-color: #5b029b;
     color: white;
+    border-radius: 5px;
+    padding: 5px 10px;
+    border: none;
+    font-size: 16px;
 }
 
 /* start: Chat */
