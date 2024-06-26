@@ -37,8 +37,10 @@ const sendMessage = asyncHandler(async (req, res) => {
       req.io.emit('newMessage', message);
 
   } catch (error) {
-    res.status(400);
-    throw new Error(error.message);
+    res.status(400).json({
+      status: false,
+      message: "Something went wrong",
+    });
   }
 });
 

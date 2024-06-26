@@ -1,11 +1,15 @@
 import axiosInt from "./axiosUtil";
 
-const callAPI = async (endpoint, params = {}, method, data = null) => {
+const callAPI = async (endpoint, params = {}, method, data = null, multipart) => {
   const token = JSON.parse(localStorage.getItem("user"))?.token;
-  const headers =  {
+  const headers = multipart == true ? {
+    Authorization: `Bearer ${token}`,
+    "Content-Type": "multipart/form-data",
+  } :  {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json", // example header
       };
+      
   let response;
   switch (method.toLowerCase()) {
     case "get":

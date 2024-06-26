@@ -1,13 +1,28 @@
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-export const SuccessMessage = ({message}) => {
-   toast.success(message, {
-        position: "top-center"
-      });
+export const SuccessMessage = (message) => {
+  setTimeout(() => toast.success(message, {
+    position: "bottom-right",
+    autoClose: 2000,
+    theme: "colored",
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  }), 10)
 }
 
-export const ErrorMessage = ({message}) => {
-    toast.error(message, {
-        position: "top-left"
-      });
+export const ErrorMessage = (message) => {
+  toast.error(message, {
+    position: "bottom-right",
+    autoClose: 2000,
+    theme: "colored",
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+  });
 }

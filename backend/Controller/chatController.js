@@ -8,29 +8,35 @@ const accessChat = asyncHandler(async (req, res) => {
   const { userId, isGroupChat } = req.body;
 
   if (!userId) {
-    res.status(400);
-    throw new Error("Id not present");
+    res.status(200).json({
+      status: true,
+      message: "Something went wrong",
+    });
   }
 
   let response;
   if (isGroupChat) {
     response = await chatService.groupChatAccess(req);
   } else response = await chatService.privateChatAcces(req);
-  res.status(200).json(response);
+   res.status(200).json(response);
 });
 
 const deleteMessage = asyncHandler(async (req, res) => {
   const { messageId } = req.query;
 
   if (!messageId) {
-    res.status(400);
-    throw new Error("Message Id not present");
+    res.status(200).json({
+      status: true,
+      message: "Something went wrong",
+    });
   }
 
   const messages = message.find({ _id: messageId });
   if (messages.length == 0) {
-    res.status(400);
-    throw new Error("Message not found");
+    res.status(200).json({
+      status: true,
+      message: "Message not Found",
+    });
   } else {
     const newData = await message.findByIdAndUpdate(
       messageId,
@@ -47,8 +53,8 @@ const deleteMessage = asyncHandler(async (req, res) => {
         status: true,
       });
     else
-      res.status(400).json({
-        status: false,
+      res.status(200).json({
+        status: true,
         message: "Something went wrong",
       });
   }
@@ -92,8 +98,10 @@ const forwardMessage = asyncHandler(async (req, res) => {
       });
     }
   } else {
-    res.status(400);
-    throw new Error("Message not found");
+    res.status(200).json({
+      status: true,
+      message: "Something went wrong",
+    });
   }
 });
 
@@ -116,8 +124,10 @@ const fetchChats = asyncHandler(async (req, res) => {
         });
       });
   } catch (error) {
-    res.status(400);
-    throw new Error(error.message);
+    res.status(200).json({
+      status: true,
+      message: "Something went wrong",
+    });
   }
 });
 
@@ -151,8 +161,10 @@ const createGroupChat = asyncHandler(async (req, res) => {
 
     res.status(200).json({ data: fullGroupChat, status: true });
   } catch (error) {
-    res.status(400);
-    throw new Error(error.message);
+    res.status(200).json({
+      status: true,
+      message: "Something went wrong",
+    });
   }
 });
 
@@ -173,8 +185,10 @@ const renameGroup = asyncHandler(async (req, res) => {
     .populate("groupAdmin", "-password");
 
   if (!updatedChat) {
-    res.status(404);
-    throw new Error("Chat Not Found");
+    res.status(200).json({
+      status: true,
+      message: "Something went wrong",
+    });
   } else {
     res.json(updatedChat);
   }
@@ -197,8 +211,10 @@ const removeFromGroup = asyncHandler(async (req, res) => {
     .populate("groupAdmin", "-password");
 
   if (!removed) {
-    res.status(404);
-    throw new Error("Chat Not Found");
+    res.status(200).json({
+      status: true,
+      message: "Chat not found",
+    });
   } else {
     res.json({ data: removed, status: true });
   }
@@ -222,8 +238,10 @@ const addToGroup = asyncHandler(async (req, res) => {
     .populate("groupAdmin", "-password");
 
   if (!added) {
-    res.status(404);
-    throw new Error("Chat Not Found");
+    res.status(200).json({
+      status: true,
+      message: "Chat not found",
+    });
   } else {
     res.json({ data: added, status: true });
   }

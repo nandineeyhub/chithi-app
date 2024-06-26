@@ -10,15 +10,19 @@ const registerUser = asyncHandler(async (req, res) => {
   console.log(req.body);
   //check if every required field exists
   if (!name || !email || !password) {
-    res.status(400);
-    throw new Error("Please provide all required fields");
+    res.status(200).json({
+      status: true,
+      message: "Please provide all required fields",
+    });
   }
   //check if user already exist
   const userExist = await user.findOne({ email });
 
   if (userExist) {
-    res.status(400);
-    throw new Error("User Already Exist");
+    res.status(200).json({
+      status: true,
+      message: "User already exists",
+    });
   }
   //generate salt and make hash
   const salt = await bycrypt.genSalt(10);
@@ -43,8 +47,10 @@ const registerUser = asyncHandler(async (req, res) => {
       message: "Account created Successfully",
     });
   } else {
-    res.status(400);
-    throw new Error("Invalid User Data");
+    res.status(200).json({
+      status: true,
+      message: "Invalid user data",
+    });
   }
 });
 
@@ -52,7 +58,7 @@ const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   //check if every required field exists
   if (!email || !password) {
-    res.status(400);
+    res.status(200);
     throw new Error("Please fill all required field");
   }
   //check if every required field exists
@@ -71,8 +77,10 @@ const login = asyncHandler(async (req, res) => {
       message: "Happy Socialising!",
     });
   } else {
-    res.status(400);
-    throw new Error("Invalid credentials");
+    res.status(200).json({
+      status: true,
+      message: "Invalid credentials",
+    });
   }
 });
 
@@ -93,7 +101,7 @@ const uploadProfilePicture = asyncHandler(async (req, res) => {
   console.log(newdata)
 
   if (!newdata) {
-    res.status(400).json({ status: false, message: "Invalid Request" });
+    res.status(200).json({ status: true, message: "Invalid Request" });
   } else {
     res
       .status(200)
@@ -115,7 +123,7 @@ const removeProfilePicture = asyncHandler(async (req, res) => {
       res
         .status(200)
         .json({
-          status: false,
+          status: true,
           message: "No profile picture found to be removed.",
         });
       return;
@@ -126,14 +134,14 @@ const removeProfilePicture = asyncHandler(async (req, res) => {
 
   fs.access(imagePath, fs.constants.F_OK, (err) => {
     if (err) {
-      res.status(400).json({ status: false, message: "Something went wrong" });
+      res.status(200).json({ status: true, message: "Something went wrong" });
     }
     // Delete the file
     fs.unlink(imagePath, async (err) => {
       if (err) {
         res
-          .status(400)
-          .json({ status: false, message: "Something went wrong" });
+          .status(200)
+          .json({ status: true, message: "Something went wrong" });
       }
       const newdata = await user.findByIdAndUpdate(req.user, {
         profilePicture: null,
@@ -144,15 +152,15 @@ const removeProfilePicture = asyncHandler(async (req, res) => {
           .json({ status: true, message: "Profile picture removed." });
       else
         res
-          .status(400)
-          .json({ status: false, message: "Something went wrong" });
+          .status(200)
+          .json({ status: true, message: "Something went wrong" });
     });
   });
 });
 
 const getMe = asyncHandler(async (req, res) => {
   if (req.user) res.status(200).json(req.user);
-  else res.status(400);
+  else res.status(200);
 });
 
 const updateMe = asyncHandler(async (req, res) => {
@@ -161,7 +169,7 @@ const updateMe = asyncHandler(async (req, res) => {
   if (newdata) {
     res.status(200).json({ status: true, message: "Profile updated." });
   } else
-    res.status(400).json({ status: false, message: "Something went wrong" });
+    res.status(200).json({ status: true, message: "Something went wrong" });
 });
 
 const generateToken = (id) => {
@@ -203,7 +211,7 @@ const allUser = asyncHandler(async (req, res) => {
       message: "All Users List.",
     });
   } else
-    res.status(400).json({ status: false, message: "Something went wrong" });
+    res.status(200).json({ status: true, message: "Something went wrong" });
 });
 
 module.exports = {

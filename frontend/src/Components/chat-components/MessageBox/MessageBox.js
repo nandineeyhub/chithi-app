@@ -1,5 +1,5 @@
 import moment from "moment";
-import React from "react";
+import React, { useRef, useState } from "react";
 
 const MessageBox = ({
   _id = "",
@@ -61,21 +61,56 @@ const TrashOptions = ({
   id = "",
   forwardPopUpAction,
 }) => {
+  const [isTrashVisible, setIsTrashVisible] = useState(false);
+  const pressTimerRef = useRef(null);
+
+  const handleMouseDown = () => {
+    pressTimerRef.current = setTimeout(() => {
+      setIsTrashVisible(true);
+    }, 500); // 500ms for a long press
+  };
+
+  const handleMouseUp = () => {
+    clearTimeout(pressTimerRef.current);
+  };
+
+  const handleMouseLeave = () => {
+    clearTimeout(pressTimerRef.current);
+  };
+
+  const handleTouchStart = () => {
+    pressTimerRef.current = setTimeout(() => {
+      setIsTrashVisible(true);
+    }, 500); // 500ms for a long press
+  };
+
+  const handleTouchEnd = () => {
+    clearTimeout(pressTimerRef.current);
+  };
+
+  const handleTouchMove = () => {
+    clearTimeout(pressTimerRef.current);
+  };
   return (
-    <div className="d-flex justify-content-center align-items-center gap-1 trash">
+    <div
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchMove={handleTouchMove}
+      className="d-flex justify-content-center align-items-center gap-1 trash">
       <i
-        className="fa fa-trash"
+        className={`fa fa-trash ${isTrashVisible && "showTrash"} `}
         onClick={() => {
           setDeletePopup();
           clickFn(id);
-        }}
-      ></i>
+        }}></i>
       <i
-        className="fa fa-share"
+        className={`fa fa-share ${isTrashVisible && "showTrash"} `}
         onClick={() => {
           if (forwardPopUpAction) forwardPopUpAction(id);
-        }}
-      ></i>
+        }}></i>
     </div>
   );
 };

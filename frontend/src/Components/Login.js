@@ -6,13 +6,15 @@ import { apiUrls, baseURL, headerwithoutauth } from "../apiConfig";
 import callAPI from "../apiUtils/apiCall";
 import { useDispatch } from "react-redux";
 import { setProfile } from "../Redux/ProfileSlice";
+import { ErrorMessage, SuccessMessage } from "../Notification";
 
 const Login = ({ setAccount }) => {
   const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [loader, setLoader] = useState(false);
   const simpleValidator = useRef(new SimpleReactValidator());
   const [, forceupdate] = useState();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleCredentials = (e) => {
     setCredentials((value) => {
@@ -29,22 +31,35 @@ const Login = ({ setAccount }) => {
     } else handleLogin();
   };
 
-
-  const dispatch = useDispatch()
-
+  const dispatch = useDispatch();
 
   const handleLogin = async () => {
     try {
-      const response = await callAPI(apiUrls.login, {}, 'post', credentials, headerwithoutauth) 
-      if(response?.status){
-        localStorage.setItem("user", JSON.stringify(response?.data))
-        dispatch(setProfile({name: response?.data?.name, email: response?.data?.email, profilePicture: response?.data?.profilePicture}))
-        navigate("/messages")
-      } else{
-        
+      const response = await callAPI(
+        apiUrls.login,
+        {},
+        "post",
+        credentials,
+        headerwithoutauth
+      );
+      if (response?.status) {
+        localStorage.setItem("user", JSON.stringify(response?.data));
+        dispatch(
+          setProfile({
+            name: response?.data?.name,
+            email: response?.data?.email,
+            profilePicture: response?.data?.profilePicture,
+          })
+        );
+        navigate("/messages");
+        SuccessMessage("Logged in")
+      } else {
+        ErrorMessage(response.message)
       }
+      setLoader(false)
     } catch (error) {
-
+      ErrorMessage(error.message)
+      setLoader(false)
     }
   };
 
@@ -87,7 +102,13 @@ const Login = ({ setAccount }) => {
           </div>
 
           <div className="input-box button">
-            <input type="Submit" role="button" value="Login" />
+            <button type="Submit" role="button" className="loginbtn">
+              {" "}
+              Login
+             {loader && <i
+                class="fa fa-spinner fa-spin"
+                style={{ marginLeft: "10px" }}></i>}
+            </button>
           </div>
           <div className="text">
             <h3>

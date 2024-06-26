@@ -4,7 +4,9 @@ const PopupWrapper = ({ children }) => {
   return (
     <div className="profile active">
       <div className="spinner_overlay"></div>
-      <div className="spinner-box w-25">{children}</div>
+      <div className="d-flex justify-content-center align-items-center m-auto">
+      <div className="spinner-box">{children}</div>
+      </div>
     </div>
   );
 };

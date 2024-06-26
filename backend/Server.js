@@ -34,11 +34,37 @@ app.use(
 app.use(express.static(path.join(__dirname, `uploads`)));
 connectDB();
 
+let users = {}
+console.log(users)
 io.on("connection", (socket) => {
   console.log("a user connected");
 
+  socket.on('user_connected', (username) => {
+    console.log(username)
+    users[username] = socket.id;
+    console.log(users)
+    io.emit('update_user_list', Object.keys(users));
+  });
+
+  socket.on('check_user_status', (username) => {
+    const userSocketId = users[username];
+    const status = userSocketId ? 'online' : 'offline';
+    socket.emit('user_status', { username, status });
+  });
+
   socket.on("disconnect", () => {
     console.log("user disconnected");
+  });
+
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+    for (const username in users) {
+      if (users[username] === socket.id) {
+        delete users[username];
+        break;
+      }
+    }
+    io.emit('update_user_list', Object.keys(users));
   });
 });
 

@@ -9,7 +9,7 @@ import callAPI from "../../../apiUtils/apiCall";
 import { apiUrls } from "../../../apiConfig";
 import ForwardPopup from "../../Popups/forwardPopup";
 
-const MessageWrapper = ({ messages = [], chatDetails, setChatDetails,  }) => {
+const MessageWrapper = ({ messages = [], chatDetails, setChatDetails, refreshList  }) => {
   const [messageList, setMessageList] = useState([]);
   const [chatList, setChatList] = useState([]);
   let messageListTemp = [];
@@ -51,7 +51,7 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails,  }) => {
       }
     }
   };
-  console.log(chatDetails?._id);
+
   const fetchChats = async () => {
     try {
       const response = await callAPI(apiUrls.fetchChats, {}, "get", null);
@@ -82,7 +82,7 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails,  }) => {
         setChatDetails((value) => {
           return { ...value, messages: newMessages };
         });
-        fetchChats()
+        refreshList()
       } else {
       }
     } catch (error) {}
@@ -112,6 +112,7 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails,  }) => {
             lastLabel={lastLabel}
             i={i}
             fetchChats={fetchChats}
+            refreshList={refreshList}
             deleteMessage={deleteMessage}
           />
         );
@@ -131,6 +132,7 @@ const MessageContainer = ({
   deleteMessage,
   chats,
   fetchChats,
+  refreshList
 }) => {
   const [deletePopup, setDeletePopup] = usePopUp();
   const [forwardPopup, setForwardPopup] = usePopUp();
@@ -139,6 +141,7 @@ const MessageContainer = ({
     messageId: "",
     recipientIds: [],
   });
+
 
   const forwardMessage = async (data) => {
     try {
@@ -149,7 +152,7 @@ const MessageContainer = ({
           messageId: "",
           recipientIds: [],
         });
-
+        refreshList()
       }
     } catch (error) {}
   };

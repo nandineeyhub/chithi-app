@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import ViewGroupPopup from "../viewGroupPopup/ViewGroupPopup";
 import AddToGroup from "../AddToGroup/AddToGroup";
 import callAPI from "../../../apiUtils/apiCall";
+import io from 'socket.io-client';
 
 const ChatHeader = ({
   name = "User",
@@ -26,6 +27,7 @@ const ChatHeader = ({
     chatId: "",
   });
   const [group, setGroup] = useState();
+  const [userStatus, setUserStatus] = useState("offline");
   const clickref = useRef();
 
   const userDetails = JSON.parse(localStorage.getItem("user"));
@@ -49,7 +51,7 @@ const ChatHeader = ({
       })}
     </>
   ) : (
-    "online"
+    userStatus
   );
 
   const fetchChats = async () => {
@@ -120,6 +122,30 @@ const ChatHeader = ({
     setAddValue({ userId: activeChatDetails });
   }, [activeChatDetails?._id]);
 
+  useEffect(() => {
+    const socket = io.connect("http://localhost:8000", { transports: ['websocket', 'polling'] });
+    const checkUserStatus = (username) => {
+      socket.emit("check_user_status", username);
+    };
+
+    if (name) {
+      checkUserStatus(name);
+    }
+
+    socket.on("user_status", ({ username, status }) => {
+      console.log("hi",username)
+      if (username == name) {
+        setUserStatus(status);
+      }
+    });
+
+    return () => {
+      socket.off("user_status");
+    };
+  }, [name]);
+
+ 
+
   return (
     <div className="conversation-top">
     
@@ -133,8 +159,8 @@ const ChatHeader = ({
         />
         <div>
           <div className="conversation-user-name">{name}</div>
-          <div className="conversation-user-status online">
-            {conversationSubtitle}
+          <div className={ conversationSubtitle == "online" && "conversation-user-status"}>
+            <span>{conversationSubtitle}</span>
           </div>
         </div>
       </div>

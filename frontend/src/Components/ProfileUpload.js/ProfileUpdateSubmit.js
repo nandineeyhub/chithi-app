@@ -6,7 +6,7 @@ const ProfileUpdateSubmit = ({handleUpdate}) => {
     const dispatch = useDispatch()
   return (
     <div className='d-flex justify-content-end align-items start gap-2 mt-5'>
-        <button className='btn btn-success'onClick={async ()=>{
+        <button className='submitBtn'onClick={async ()=>{
              await handleUpdate()
              dispatch(handleProfileOpen())
         }}>Done</button>

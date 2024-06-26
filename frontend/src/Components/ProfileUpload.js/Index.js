@@ -24,12 +24,12 @@ const Index = ({ profileDetails, fn, action = false }) => {
     formData.append("picture", e.target.files[0]);
     console.log(formData)
     try {
-      const response = await API(
+      const response = await callAPI(
         apiUrls.uploadProfilePicture,
         {},
         "POST",
         formData,
-        multiPartHeader
+        true
       );
       if (response?.status) {
         setDetails((value) => {

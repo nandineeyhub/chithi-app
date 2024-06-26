@@ -62,14 +62,20 @@ form h3{
   font-weight: 500;
   margin-left: 10px;
 }
-.input-box.button input{
+.loginbtn{
   color: #fff;
-  /* letter-spacing: 1px; */
+  height: 100%;
+  width: 100%;
+  border: none;
+  padding: 0 10px;
+  font-size: 16px;
+  font-weight: 400;
   border: none;
   background:  #5b029b;
   cursor: pointer;
+  border-radius: 6px;
 }
-.input-box.button input:hover{
+.loginbtn:hover{
   background: #5b029b;
 }
 form .text h3{
@@ -103,14 +109,15 @@ form .text h3 a:hover{
 }
 
 .spinner-box {
-  position: fixed;
+  position: absolute;
   left: 50%;
   top: 50%;  
   transform: translate(-50%, -50%);
   z-index: 12; 
   background-color: white;
   padding: 25px;
-  border-radius: 7px;
+  border-radius: 10px;
+  width: 300px;
 }
 
 .choose-dp-logo{
@@ -166,6 +173,9 @@ form .text h3 a:hover{
   border-radius: 50%;
   overflow: hidden;
 }
+.chatStatus{
+  color:#5b029b
+}
 
 @media screen and (max-width: 767px) {
   .wrapper{
@@ -178,11 +188,6 @@ form .text h3 a:hover{
   box-shadow: 0 5px 10px rgba(176, 175, 175, 0);
 }
 
-.spinner-box {
-  height: 100vh;
-  width: 100vw;
-  background-color: white;
-  border-radius: 0px;
-}
+
 
 }

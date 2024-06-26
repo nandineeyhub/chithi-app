@@ -14,7 +14,7 @@ const Registration = ({ setAccount }) => {
   });
   const simpleValidator = useRef(new SimpleReactValidator());
   const [, forceupdate] = useState();
-
+  const [loader, setLoader] = useState(false);
   const handleFormData = (e) => {
     setFormData((value) => {
       return { ...value, [e.target.name]: e.target.value };
@@ -35,6 +35,7 @@ const Registration = ({ setAccount }) => {
   };
 
   const handleRegistration = async () => {
+    setLoader(true)
     try {
       let data = formData;
       delete data["confirmPassword"];
@@ -44,10 +45,15 @@ const Registration = ({ setAccount }) => {
         header
       );
       if (response.data.status) {
-        SuccessMessage(response.data.message);
+        setLoader(false)
+        SuccessMessage(response.message);
         setAccount(true);
-      } else ErrorMessage(response.data.message);
-    } catch (error) {}
+      } else ErrorMessage(response.message);
+  
+    } catch (error) {
+      setLoader(false)
+      ErrorMessage(error.message)
+    }
   };
 
   return (
@@ -120,7 +126,13 @@ const Registration = ({ setAccount }) => {
             </div>
           </div>
           <div className="input-box button">
-            <input type="Submit" value="Register Now" />
+          <button type="Submit" role="button" className="loginbtn">
+           
+              Register now
+             {loader && <i
+                class="fa fa-spinner fa-spin"
+                style={{ marginLeft: "10px" }}></i>}
+            </button>
           </div>
           <div className="text">
             <h3>

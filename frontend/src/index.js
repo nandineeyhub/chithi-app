@@ -8,6 +8,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import AuthRequired from './Guard';
 import ChatWindow from './Components/chat-components/MainLayout/chatWindow';
 import GuestUser from './GuestUser';
+import { ToastContainer } from 'react-toastify';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -25,7 +26,10 @@ const router = createBrowserRouter([{
 
 
 root.render(
-    <RouterProvider router={router}/>
+    <>
+     <ToastContainer />
+     <RouterProvider router={router}/>
+    </>
     // <Index/>
 );
 

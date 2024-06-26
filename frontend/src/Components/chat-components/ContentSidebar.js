@@ -7,16 +7,16 @@ import { setActiveChat } from "../../Redux/MessageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import CreateGroupPopup from "./CreateGroupPopup/CreateGroupPopup";
 import useHandlePopup from "../../helpers/useHandlePopup";
-
-const ContentSidebar = ({ setShowChat, showChat }) => {
+import ChatSideBar from "./ChatSideBar/ChatSideBar";
+import io from 'socket.io-client';
+const ContentSidebar = ({ setShowChat, showChat, friendSuggestions, chats, setFriendSuggestions }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [friendSuggestions, setFriendSuggestions] = useState([]);
   const [loader, setLoader] = useState(false);
-  const [chats, setChats] = useState([]);
   const [groupOpen, setGroupOpen] = useHandlePopup();
   const [groupData, setGroupData] = useState({ name: "", users: [] });
-
+  const userDetails = JSON.parse(localStorage.getItem("user"));
   const token = JSON.parse(localStorage.getItem("user"))?.token;
+
 
   const headerstemp = {
     Authorization: `Bearer ${token}`,
@@ -46,25 +46,7 @@ const ContentSidebar = ({ setShowChat, showChat }) => {
     } catch (error) {}
   };
 
-  const fetchChats = async () => {
-    setLoader(true);
-    try {
-      const response = await callAPI(
-        apiUrls.fetchChats,
-        {},
-        "get",
-        null,
-        headerstemp
-      );
-      if (response.status) {
-        setChats(response.data);
-        setFriendSuggestions(response.data);
-        setLoader(false);
-      }
-    } catch (error) {
-      setLoader(false);
-    }
-  };
+  
 
   const searchfriends = async (searchQuery) => {
     setLoader(true);
@@ -148,19 +130,31 @@ const ContentSidebar = ({ setShowChat, showChat }) => {
     }
   }, [searchQuery]);
 
+
+
   useEffect(() => {
-    fetchChats();
-  }, []);
+    const socket = io.connect("http://localhost:8000", { transports: ['websocket', 'polling'] });
+    if (userDetails?.name) {
+      console.log("hi")
+      socket.emit("user_connected", userDetails.name);
+    }
+
+    return () => {
+      socket.off("user_connected");
+    };
+  }, [userDetails?.name]);
 
   return (
     <div className={`content-sidebar ${showChat && "hide"}`}>
       <div className="content-sidebar-title py-3 px-3">
-        <div className="">Chats</div>
+        <div className="d-flex justify-content-center align-items-center gap-2">
+          <ChatSideBar />
+          Chats
+        </div>
         <div style={{ marginTop: "auto", position: "relative" }}>
           <i
             className="fa fa-plus content-sidebar-title group-add"
-            onClick={setGroupOpen}
-          ></i>
+            onClick={setGroupOpen}></i>
           <div className="group-add-popup">
             {groupOpen && (
               <CreateGroupPopup
