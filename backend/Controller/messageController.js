@@ -33,6 +33,8 @@ const sendMessage = asyncHandler(async (req, res) => {
       data:{
         message:message
       }});
+ 
+      req.io.emit('newMessage', message);
 
   } catch (error) {
     res.status(400);

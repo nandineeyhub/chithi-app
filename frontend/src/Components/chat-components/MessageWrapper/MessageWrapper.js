@@ -9,7 +9,7 @@ import callAPI from "../../../apiUtils/apiCall";
 import { apiUrls } from "../../../apiConfig";
 import ForwardPopup from "../../Popups/forwardPopup";
 
-const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
+const MessageWrapper = ({ messages = [], chatDetails, setChatDetails,  }) => {
   const [messageList, setMessageList] = useState([]);
   const [chatList, setChatList] = useState([]);
   let messageListTemp = [];
@@ -82,6 +82,7 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails }) => {
         setChatDetails((value) => {
           return { ...value, messages: newMessages };
         });
+        fetchChats()
       } else {
       }
     } catch (error) {}
@@ -148,6 +149,7 @@ const MessageContainer = ({
           messageId: "",
           recipientIds: [],
         });
+
       }
     } catch (error) {}
   };
@@ -201,6 +203,7 @@ const MessageContainer = ({
       {deletePopup && (
         <WarningPopup
           action={"Delete"}
+          text={"It will only be deleted for you."}
           cancelFn={setDeletePopup}
           submitFn={() => {
             deleteMessage(id);

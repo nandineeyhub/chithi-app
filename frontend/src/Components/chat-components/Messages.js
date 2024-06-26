@@ -1,21 +1,20 @@
 import React, { useEffect, useState } from "react";
 import MessageTypeBar from "./MessageTypeBar/MessageTypeBar";
 import ChatHeader from "./ChatHeader/ChatHeader";
-import ChatDayStamp from "./ChatDayStamp/ChatDayStamp";
 import MessageWrapper from "./MessageWrapper/MessageWrapper";
 import { useDispatch, useSelector } from "react-redux";
 import { setActiveChat } from "../../Redux/MessageSlice";
 import callAPI from "../../apiUtils/apiCall";
-import { apiUrls, headers } from "../../apiConfig";
+import { apiUrls, base, headers } from "../../apiConfig";
 import DefaultChatWindow from "./DefaultChatWindow";
-import WarningPopup from "../Popups/WarningPopup";
-import { usePopUp } from "../../customHooks";
+import io from 'socket.io-client';
 
-const Messages = ({ showChat, setShowChat }) => {
+
+const Messages = ({ showChat, setShowChat, fetchChats }) => {
   const [chatDetails, setChatDetails] = useState({});
   const [messageBody, setMessageBody] = useState({ chatId: "", content: "" });
   const activeChatDetails = useSelector((store) => store.messages.activeChat);
-
+  
   const dispatch = useDispatch();
 
   const handleMessage = (e) => {
@@ -63,7 +62,7 @@ const Messages = ({ showChat, setShowChat }) => {
         setMessageBody((value) => {
           return { ...value, content: "" };
         });
-        appendNewMessage(response?.data?.message);
+       
       }
     } catch (error) {}
   };
@@ -80,18 +79,30 @@ const Messages = ({ showChat, setShowChat }) => {
     }
   }, [activeChatDetails?._id]);
 
+  useEffect(() => {
+    const socket = io.connect("http://localhost:8000", { transports: ['websocket', 'polling'] }); 
+    socket.on('newMessage', (message) => {
+      setChatDetails((val) => { return {...val, messages :[...val.messages, message]}});
+    });
+
+    return () => {
+      socket.off('newMessage');
+    };
+  }, []);
+
   return activeChatDetails ? (
     <div className={`conversation ${showChat === false && "hide"}`}>
       <ChatHeader {...activeChatDetails} setShowChat={setShowChat} />
       <div className="conversation-main">
         <div className="conversation-wrapper">
-          <MessageWrapper {...chatDetails} setChatDetails={setChatDetails} />
+          <MessageWrapper {...chatDetails} setChatDetails={setChatDetails} refreshList={fetchChats}/>
         </div>
       </div>
       <MessageTypeBar
         handleMessage={handleMessage}
         sendMessage={sendMessage}
         content={messageBody.content}
+        setMessageBody={setMessageBody}
       />
     </div>
   ) : (

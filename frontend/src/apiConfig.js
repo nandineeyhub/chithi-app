@@ -2,7 +2,7 @@
 
 export const baseURL = "http://localhost:8000/api/";
 export const imgUrl = "http://localhost:8000/api/users/images/"
-
+export const base = "http://localhost:8000"
 export const apiUrls = {
   
   login: "users/login",

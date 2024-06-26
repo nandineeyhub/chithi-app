@@ -41,7 +41,6 @@ const deleteMessage = asyncHandler(async (req, res) => {
         new: true,
       }
     );
-    console.log(newData);
     if (newData)
       res.status(200).json({
         data: newData,
