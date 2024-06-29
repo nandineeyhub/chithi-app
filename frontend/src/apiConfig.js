@@ -1,8 +1,8 @@
 
 
-export const baseURL = "http://localhost:8000/api/";
-export const imgUrl = "http://localhost:8000/api/users/images/"
-export const base = "http://localhost:8000"
+export const baseURL = "https://ping-chats.vercel.app/api/";
+export const imgUrl = "https://ping-chats.vercel.app/api/users/images/"
+export const base = "https://ping-chats.vercel.app"
 export const apiUrls = {
   
   login: "users/login",
