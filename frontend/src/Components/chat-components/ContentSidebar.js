@@ -4,11 +4,13 @@ import SearchBar from "./SearchBar/SearchBar";
 import callAPI from "../../apiUtils/apiCall";
 import { apiUrls, groupImg, headers, imgUrl } from "../../apiConfig";
 import { setActiveChat } from "../../Redux/MessageSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import CreateGroupPopup from "./CreateGroupPopup/CreateGroupPopup";
 import useHandlePopup from "../../helpers/useHandlePopup";
 import ChatSideBar from "./ChatSideBar/ChatSideBar";
 import io from 'socket.io-client';
+
+
 const ContentSidebar = ({ setShowChat, showChat, friendSuggestions, chats, setFriendSuggestions }) => {
   const [searchQuery, setSearchQuery] = useState("");
   const [loader, setLoader] = useState(false);

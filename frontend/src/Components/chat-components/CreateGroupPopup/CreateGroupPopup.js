@@ -4,7 +4,7 @@ import { imgUrl, noImg } from "../../../apiConfig";
 import ActionButtons from "../ActionButtons/ActionButtons";
 import KidPopUp from "../PopupWrapper/KidPopUp";
 
-const CreateGroupPopup = ({ fn, users = [], submitFn, setGroupData, groupData }) => {
+const CreateGroupPopup = ({ fn, users = [], submitFn, setGroupData, groupData, cancelFn }) => {
   const ListAllUsers = () => {
     return users?.map((item) => {
       const { Users = [], isGroupChat = false } = item;
@@ -77,7 +77,7 @@ const CreateGroupPopup = ({ fn, users = [], submitFn, setGroupData, groupData })
       <div style={{ height: "300px", fontSize: "13px" }} className="my-2 w-100">
         <ListAllUsers />
       </div>
-      <ActionButtons submitText="Create" submitFn={submitFn} />
+      <ActionButtons submitText="Create" submitFn={submitFn} cancelFn={cancelFn}/>
     </KidPopUp>
   );
 };

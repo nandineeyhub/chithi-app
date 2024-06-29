@@ -23,13 +23,7 @@ const Messages = ({ showChat, setShowChat, fetchChats }) => {
     });
   };
 
-  const appendNewMessage = (message) => {
-    let newMessageList = chatDetails?.messages;
-    newMessageList.push(message);
-    setChatDetails((value) => {
-      return { ...value, messages: newMessageList };
-    });
-  };
+ 
 
   const accessChat = async (id, isGroupChat) => {
     try {

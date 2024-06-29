@@ -9,7 +9,7 @@ import { setProfile } from "../Redux/ProfileSlice";
 import { ErrorMessage, SuccessMessage } from "../Notification";
 
 const Login = ({ setAccount }) => {
-  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [credentials, setCredentials] = useState({ email: "shreya@gmail.com", password: "password" });
   const [loader, setLoader] = useState(false);
   const simpleValidator = useRef(new SimpleReactValidator());
   const [, forceupdate] = useState();
@@ -102,7 +102,7 @@ const Login = ({ setAccount }) => {
           </div>
 
           <div className="input-box button">
-            <button type="Submit" role="button" className="loginbtn">
+            <button type="Submit" role="button" className="loginbtn" disabled={loader}>
               {" "}
               Login
              {loader && <i

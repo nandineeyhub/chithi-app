@@ -7,7 +7,7 @@ import { useSelector } from "react-redux";
 import ViewGroupPopup from "../viewGroupPopup/ViewGroupPopup";
 import AddToGroup from "../AddToGroup/AddToGroup";
 import callAPI from "../../../apiUtils/apiCall";
-import io from 'socket.io-client';
+import io from "socket.io-client";
 
 const ChatHeader = ({
   name = "User",
@@ -123,7 +123,9 @@ const ChatHeader = ({
   }, [activeChatDetails?._id]);
 
   useEffect(() => {
-    const socket = io.connect("http://localhost:8000", { transports: ['websocket', 'polling'] });
+    const socket = io.connect("http://localhost:8000", {
+      transports: ["websocket", "polling"],
+    });
     const checkUserStatus = (username) => {
       socket.emit("check_user_status", username);
     };
@@ -133,7 +135,7 @@ const ChatHeader = ({
     }
 
     socket.on("user_status", ({ username, status }) => {
-      console.log("hi",username)
+      console.log("hi", username);
       if (username == name) {
         setUserStatus(status);
       }
@@ -144,14 +146,13 @@ const ChatHeader = ({
     };
   }, [name]);
 
- 
-
   return (
     <div className="conversation-top">
-    
-
       <div className="conversation-user">
-      <i className="fa fa-arrow-left conversation-back" onClick={() => setShowChat()} />
+        <i
+          className="fa fa-arrow-left conversation-back"
+          onClick={() => setShowChat()}
+        />
         <img
           className="conversation-user-image"
           src={profilePicUrl}
@@ -159,7 +160,11 @@ const ChatHeader = ({
         />
         <div>
           <div className="conversation-user-name">{name}</div>
-          <div className={ conversationSubtitle == "online" && "conversation-user-status"}>
+          <div
+            className={
+              conversationSubtitle == "online" && "conversation-user-status"
+            }
+          >
             <span>{conversationSubtitle}</span>
           </div>
         </div>

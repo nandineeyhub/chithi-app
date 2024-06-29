@@ -8,6 +8,8 @@ import ChatDayStamp from "../ChatDayStamp/ChatDayStamp";
 import callAPI from "../../../apiUtils/apiCall";
 import { apiUrls } from "../../../apiConfig";
 import ForwardPopup from "../../Popups/forwardPopup";
+import { useDispatch } from "react-redux";
+import { ErrorMessage, SuccessMessage } from "../../../Notification";
 
 const MessageWrapper = ({ messages = [], chatDetails, setChatDetails, refreshList  }) => {
   const [messageList, setMessageList] = useState([]);
@@ -114,6 +116,7 @@ const MessageWrapper = ({ messages = [], chatDetails, setChatDetails, refreshLis
             fetchChats={fetchChats}
             refreshList={refreshList}
             deleteMessage={deleteMessage}
+            chat={chatDetails}
           />
         );
       })}
@@ -132,7 +135,8 @@ const MessageContainer = ({
   deleteMessage,
   chats,
   fetchChats,
-  refreshList
+  refreshList,
+  chat
 }) => {
   const [deletePopup, setDeletePopup] = usePopUp();
   const [forwardPopup, setForwardPopup] = usePopUp();
@@ -142,6 +146,7 @@ const MessageContainer = ({
     recipientIds: [],
   });
 
+  const dispatch = useDispatch()
 
   const forwardMessage = async (data) => {
     try {
@@ -153,8 +158,13 @@ const MessageContainer = ({
           recipientIds: [],
         });
         refreshList()
+        SuccessMessage(response.message)
+      }else{
+        ErrorMessage(response.message)
       }
-    } catch (error) {}
+    } catch (error) {
+      ErrorMessage(error.message)
+    }
   };
 
   const forwardPopUpAction = (id) => {

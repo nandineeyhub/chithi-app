@@ -1,0 +1,14 @@
+{
+    "version": 2,
+    "name": "chithi-backend",
+    "builds": [
+      {
+        "src": "backend/**/*.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      { "src": "/api/(.*)", "dest": "/backend/$1" }
+    ]
+  }
+  
